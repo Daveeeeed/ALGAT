@@ -1,0 +1,15 @@
+Vantaggi e svantaggi della programmazione Top-Down
+Vantaggi:\n
+\n
+• Consente di dare una descrizione dell’algoritmo più leggibile\n
+\n
+• Il codice è semplice da seguire, dato che è scritto in maniera strutturale e con uno scopo preciso\n
+\n
+• Essendo ciascun sottoproblema indipendente dagli altri, la sua risoluzione può essere modificata, se necessario, senza che si modifichi la struttura generale dell’algoritmo\n
+\n
+\n
+Svantaggi:\n
+\n
+• La programmazione top-down può complicare la fase di test, dato che non esisterà un eseguibile finché non si arriverà alla fine del progetto\n
+\n
+• Tutte le decisioni dipendono dalla chiamata iniziale del progetto e la risoluzione del problema è interamente affidata all'algoritmo\n

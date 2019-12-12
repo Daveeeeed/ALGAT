@@ -1,0 +1,16 @@
+Introduzione
+Divide et Impera\n
+\n
+Divide et impera è una tecnica di progettazione (top-down) di algoritmi che si articola in tre fasi:\n
+\n
+• Dividere l’istanza dei dati di ingresso del problema in più sottoistanze disgiunte (divide)\n
+\n
+• Risolvere ricorsivamente il problema su ciascuna sottoistanza considerata separatamente\n
+\n
+• Combinare le soluzioni delle sottoistanze per ottenere la soluzionedell’istanza data (impera)\n
+\n
+Programmazione top-down\n
+\n
+• Il metodo top-down è un metodo di progettazione degli algoritmi ricorsivi che procede analizzando il problema da risolvere dal caso generale (top) al caso particolare (down)\n
+\n
+• Il metodo top-down consiste nello scomporre il problema in sottoproblemi sempre più semplici, giungendo a quelli con cui si ha già familiarità e che si è in grado di risolvere; piuttosto che definire nei minimi dettagli i singoli passi di un algoritmo che possa risolvere il problema\n

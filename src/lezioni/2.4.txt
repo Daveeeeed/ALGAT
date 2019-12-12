@@ -1,0 +1,11 @@
+Differenze Merge e Quick sort:
+\n
+• Nell'ordinamento di tipo merge, l'array deve essere diviso in sole due metà (ovvero n / 2), al contrario, nel Quicksort, non vi è alcuna costrizione a dividere l'elenco in elementi più o meno uguali\n
+\n
+• La complessità nel caso peggiore del Quicksort è O(n^2) in quanto richiede molti più confronti, invece, il mergesort presenta lo stesso costo sia nel caso peggiore sia nel caso medio, ovvero O (n log n) ma esegue però molte ricopiature per eseguire la fusione\n
+\n
+• Mergesort funziona bene su qualsiasi tipo di set di dati, sia grande o piccolo. Al contrario, il Quicksort non può funzionare bene con dei dati di grandi dimensioni, ma è più veloce nei casi in cui i dati sono ridotti\n
+\n
+• Il Mergesort richiede uno spazio di memoria aggiuntivo per memorizzare gli array ausiliari d'altra parte, il Quicksort non richiede molto spazio per un ulteriore spazio di archiviazione\n
+\n
+• Il Quicksort è un metodo di ordinamento interno in cui i dati da ordinare vengono regolati contemporaneamente nella memoria principale, al contrario, il Mergesort è un metodo di ordinamento esterno in cui i dati da ordinare non possono essere sistemati contemporaneamente nella memoria e alcuni devono essere conservati nella memoria ausiliaria\n

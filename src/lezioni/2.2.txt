@@ -1,0 +1,8 @@
+Algoritmo:
+\n
+• Inizialmente si divide il vettore di n elementi in due meta' (Divide)\n
+\n
+• Poi si chiama ricorsivamente Merge Sort sui due sotto-vettori (Impera)\n
+\n
+• Si fondono (merge) gli array ordinati per ottenere l'array iniziale ordinato\n
+\n

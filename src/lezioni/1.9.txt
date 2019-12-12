@@ -1,0 +1,9 @@
+Quick-sort nel caso pessimo ha costo computazionale
+
+O(log(n))
+T
+O(n^2)
+
+O(n log(n))
+
+O(n^3)

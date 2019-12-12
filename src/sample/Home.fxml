@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#updateImage" onMouseDragged="#updateImage" onMouseEntered="#updateImage" onMouseExited="#updateImage" onMouseMoved="#updateImage" onMousePressed="#updateImage" onMouseReleased="#updateImage" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Home">
+    <TabPane fx:id="tabPane" layoutX="100.0" layoutY="152.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+       <Tab closable="false" text="Home">
+          <VBox alignment="TOP_CENTER" prefHeight="538.0" prefWidth="900.0">
+             <opaqueInsets>
+                <Insets />
+             </opaqueInsets>
+             <Text disable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="LEZIONI" VBox.vgrow="NEVER">
+                <font>
+                   <Font name="Avenir Next Medium" size="36.0" />
+                </font>
+                <VBox.margin>
+                   <Insets bottom="10.0" top="10.0" />
+                </VBox.margin>
+             </Text>
+             <ImageView fx:id="imageView" cache="true" fitHeight="388.0" fitWidth="600.0" onMouseClicked="#goToLesson" onMouseExited="#updateImage" pickOnBounds="true" preserveRatio="true" VBox.vgrow="NEVER">
+                <VBox.margin>
+                   <Insets />
+                </VBox.margin>
+                <Image url="@../immagini/0.png" />
+             </ImageView>
+             <Pagination fx:id="pagination" maxPageIndicatorCount="4" onMouseClicked="#updateImage" onMouseDragged="#updateImage" onMouseEntered="#updateImage" onMouseExited="#updateImage" onMouseMoved="#updateImage" onMousePressed="#updateImage" onMouseReleased="#updateImage" pageCount="4" VBox.vgrow="NEVER">
+                <cursor>
+                   <Cursor fx:constant="DEFAULT" />
+                </cursor>
+                <VBox.margin>
+                   <Insets />
+                </VBox.margin>
+             </Pagination>
+             <CheckBox fx:id="lessonStatus" disable="true" mnemonicParsing="false" text="Lezione da completare" VBox.vgrow="NEVER">
+                <font>
+                   <Font name="Avenir Medium" size="16.0" />
+                </font>
+                <VBox.margin>
+                   <Insets top="10.0" />
+                </VBox.margin>
+             </CheckBox>
+             <Pane minHeight="4.0" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+             <Separator prefWidth="200.0" VBox.vgrow="NEVER">
+                <padding>
+                   <Insets bottom="10.0" top="10.0" />
+                </padding>
+             </Separator>
+             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Benvenuto nel menu principale" VBox.vgrow="NEVER">
+                <font>
+                   <Font name="Avenir Roman" size="18.0" />
+                </font>
+             </Text>
+             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Clicca sull'immagine per iniziare la lezione" textAlignment="RIGHT" VBox.vgrow="NEVER">
+                <font>
+                   <Font name="Avenir Medium" size="18.0" />
+                </font>
+             </Text>
+             <CheckBox fx:id="verify" mnemonicParsing="false" text="CheckBox" visible="false" />
+          </VBox>
+       </Tab>
+    </TabPane>
+</AnchorPane>
