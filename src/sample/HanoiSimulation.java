@@ -27,6 +27,7 @@ import javafx.scene.shape.Cylinder;
 import javafx.scene.text.Font;
 
 public class HanoiSimulation {
+
     @FXML
     private Button add;
     @FXML
@@ -51,6 +52,7 @@ public class HanoiSimulation {
     private ScrollPane scrollPane;
     @FXML
     private VBox vBox;
+
     private LinkedList<DiscNode> discNodeLinkedList = new LinkedList();
     private LinkedList<Label> labelLinkedList = new LinkedList();
     private Integer labelIndex = 0;
@@ -69,7 +71,7 @@ public class HanoiSimulation {
         label.setMinWidth(120.0D);
         label.setMaxWidth(120.0D);
         label.setPrefWidth(120.0D);
-        label.setBorder(new Border(new BorderStroke[]{new BorderStroke((Paint)null, BorderStrokeStyle.SOLID, (CornerRadii)null, new BorderWidths(1.0D))}));
+        label.setBorder(new Border(new BorderStroke(null, BorderStrokeStyle.SOLID, null, new BorderWidths(1.0D))));
         if (firstIndex == lastIndex && hBoxesIndex < hBoxes.length) {
             label.setText("Sposta il disco numero " + (firstIndex + 1) + " dal piolo " + pioloOrigine + " al piolo " + pioloDestinazione);
             hBoxes[hBoxesIndex].getChildren().add(label);
@@ -169,7 +171,7 @@ public class HanoiSimulation {
             alert.setTitle("Avviso");
             alert.setHeaderText("Quantità massima dischi raggiunta");
             alert.setContentText("Avvia la simulazione o rimuovi qualche disco.");
-            alert.getButtonTypes().setAll(new ButtonType[]{button});
+            alert.getButtonTypes().setAll(button);
             alert.setGraphic(imageView);
             alert.showAndWait();
         }
@@ -192,7 +194,7 @@ public class HanoiSimulation {
             list_full.setTitle("Avviso");
             list_full.setHeaderText("Impossibile rimuovere il disco");
             list_full.setContentText("Aggiungi qualche disco.");
-            list_full.getButtonTypes().setAll(new ButtonType[]{button});
+            list_full.getButtonTypes().setAll(button);
             list_full.setGraphic(imageView);
             list_full.showAndWait();
         }
@@ -238,9 +240,9 @@ public class HanoiSimulation {
     @FXML
     void nextStep() {
         if (this.labelIndex < this.labelLinkedList.size()) {
-            String string = ((Label)this.labelLinkedList.get(this.labelIndex)).getText();
-            GridPane.setColumnIndex((Node)this.gridPane.getChildren().get(Character.getNumericValue(string.charAt(23)) - 1), Character.getNumericValue(string.charAt(46)));
-            GridPane.setRowIndex((Node)this.gridPane.getChildren().get(Character.getNumericValue(string.charAt(23)) - 1), this.correctCylinderIndex(Character.getNumericValue(string.charAt(46))));
+            String string = this.labelLinkedList.get(this.labelIndex).getText();
+            GridPane.setColumnIndex(this.gridPane.getChildren().get(Character.getNumericValue(string.charAt(23)) - 1), Character.getNumericValue(string.charAt(46)));
+            GridPane.setRowIndex(this.gridPane.getChildren().get(Character.getNumericValue(string.charAt(23)) - 1), this.correctCylinderIndex(Character.getNumericValue(string.charAt(46))));
             this.increaseCylinderIndex(Character.getNumericValue(string.charAt(35)));
             this.decreaseCylinderIndex(Character.getNumericValue(string.charAt(46)));
             Integer var2 = this.labelIndex;
@@ -254,7 +256,7 @@ public class HanoiSimulation {
             alert.setTitle("Avviso");
             alert.setHeaderText("Simulazione Terminata");
             alert.setContentText("Hai terminato la simulazionecon successo.");
-            alert.getButtonTypes().setAll(new ButtonType[]{button});
+            alert.getButtonTypes().setAll(button);
             alert.setGraphic(imageView);
             alert.showAndWait();
             this.next.setDisable(true);

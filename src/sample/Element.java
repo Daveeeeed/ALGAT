@@ -1,7 +1,6 @@
 package sample;
 
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -10,6 +9,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class Element {
+
     private int value;
     private StackPane stackPane;
     private Label label;
@@ -24,7 +24,7 @@ public class Element {
         this.rectangle.setStrokeWidth(1.0D);
         this.rectangle.setStroke(Color.BLACK);
         this.stackPane = new StackPane();
-        this.stackPane.getChildren().addAll(new Node[]{this.rectangle, this.label});
+        this.stackPane.getChildren().addAll(this.rectangle, this.label);
         this.stackPane.setPadding(new Insets(0.0D, 3.0D, 0.0D, 3.0D));
     }
 

@@ -12,7 +12,7 @@ public class Main extends Application {
 
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("Intro.fxml"));
-        Parent root = (Parent)loader.load();
+        Parent root = loader.load();
         primaryStage.setTitle("Progetto AlgaT - Divide et Impera");
         primaryStage.setScene(new Scene(root, 900.0D, 600.0D));
         primaryStage.show();

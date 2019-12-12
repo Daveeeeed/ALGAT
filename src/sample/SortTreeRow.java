@@ -24,11 +24,11 @@ public class SortTreeRow {
     }
 
     public SortTreeNode getNode(int i) {
-        return (SortTreeNode)this.nodes.get(i);
+        return this.nodes.get(i);
     }
 
     public SortTreeNode getFirstNode() {
-        return (SortTreeNode)this.nodes.getFirst();
+        return this.nodes.getFirst();
     }
 
     public HBox getRowBox() {

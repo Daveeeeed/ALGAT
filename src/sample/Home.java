@@ -16,7 +16,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Home implements Initializable {
+
     private final int LESSON_NR = 3;
+
     @FXML
     private TabPane tabPane;
     @FXML
@@ -27,6 +29,7 @@ public class Home implements Initializable {
     private CheckBox lessonStatus;
     @FXML
     private CheckBox verify;
+
     private boolean[] lessonCompleted;
     private Image[] images;
     private int currentImageDisplayed = 0;
@@ -35,33 +38,29 @@ public class Home implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.pagination.setMaxPageIndicatorCount(3);
-        this.images = new Image[3];
-        IntStream.range(0, this.images.length).forEach((i) -> {
-            this.images[i] = new Image("/immagini/" + i + ".png");
-        });
-        this.lessonCompleted = new boolean[3];
-        IntStream.range(0, this.lessonCompleted.length).forEach((i) -> {
-            this.lessonCompleted[i] = false;
-        });
+        pagination.setMaxPageIndicatorCount(LESSON_NR);
+        images = new Image[LESSON_NR];
+        IntStream.range(0, images.length).forEach((i) -> images[i] = new Image("/immagini/" + i + ".png"));
+        lessonCompleted = new boolean[LESSON_NR];
+        IntStream.range(0, lessonCompleted.length).forEach((i) -> lessonCompleted[i] = false);
     }
 
     @FXML
     void goToLesson() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("LessonBox.fxml"));
-        Parent root = (Parent)fxmlLoader.load();
-        LessonBox lessonBox = (LessonBox)fxmlLoader.getController();
-        lessonBox.loadLesson(this.pagination.getCurrentPageIndex(), 1);
-        Tab tab = new Tab("Lezione " + (this.pagination.getCurrentPageIndex() + 1), root);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LessonBox.fxml"));
+        Parent root = fxmlLoader.load();
+        LessonBox lessonBox = fxmlLoader.getController();
+        lessonBox.loadLesson(pagination.getCurrentPageIndex(), 1);
+        Tab tab = new Tab("Lezione " + (pagination.getCurrentPageIndex() + 1), root);
         tab.setClosable(true);
-        this.tabPane.getTabs().add(tab);
+        tabPane.getTabs().add(tab);
     }
 
     @FXML
     void updateImage() {
-        if (this.verify.isSelected()) {
-            this.verify.setSelected(false);
-            this.lessonCompleted[Integer.parseInt(this.verify.getText())] = true;
+        if (verify.isSelected()) {
+            verify.setSelected(false);
+            lessonCompleted[Integer.parseInt(verify.getText())] = true;
         }
 
         if (this.pagination.getCurrentPageIndex() != this.currentImageDisplayed) {

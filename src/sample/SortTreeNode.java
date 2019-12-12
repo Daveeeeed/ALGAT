@@ -25,16 +25,16 @@ public class SortTreeNode {
     public SortTreeNode() {
         this.hBox.setAlignment(Pos.CENTER);
         this.hBox.setPrefHeight(62.0D);
-        this.hBox.setBorder(new Border(new BorderStroke[]{new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, (CornerRadii)null, new BorderWidths(2.0D))}));
+        this.hBox.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, null, new BorderWidths(2.0D))));
         this.hBox.setMaxHeight(62.0D);
-        this.hBox.setBackground(new Background(new BackgroundFill[]{new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)}));
+        this.hBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
     public void pinActive() {
         int j = 0;
 
         for(int i = 0; i < this.elements.size(); ++i) {
-            if (((Element)this.elements.get(i)).getValue() < ((Element)this.elements.getFirst()).getValue()) {
+            if (this.elements.get(i).getValue() < this.elements.getFirst().getValue()) {
                 ++j;
                 this.swapElements(i, j);
             }
@@ -49,7 +49,7 @@ public class SortTreeNode {
         int j = 0;
 
         for(int i = 0; i < this.elements.size(); ++i) {
-            if (((Element)this.elements.get(i)).getValue() < ((Element)this.elements.getFirst()).getValue()) {
+            if (this.elements.get(i).getValue() < this.elements.getFirst().getValue()) {
                 ++j;
             }
         }
@@ -59,23 +59,23 @@ public class SortTreeNode {
     }
 
     public void swapElements(int first, int second) {
-        int tmp = ((Element)this.elements.get(first)).getValue();
-        ((Element)this.elements.get(first)).setValue(((Element)this.elements.get(second)).getValue());
-        ((Element)this.elements.get(second)).setValue(tmp);
+        int tmp = this.elements.get(first).getValue();
+        this.elements.get(first).setValue(this.elements.get(second).getValue());
+        this.elements.get(second).setValue(tmp);
     }
 
     public void addElement(int value) {
         this.elements.add(new Element(value));
-        this.hBox.getChildren().add(((Element)this.elements.getLast()).getStackPane());
+        this.hBox.getChildren().add(this.elements.getLast().getStackPane());
     }
 
     public void removeLastElement() {
-        this.hBox.getChildren().remove(((Element)this.elements.getLast()).getStackPane());
+        this.hBox.getChildren().remove(this.elements.getLast().getStackPane());
         this.elements.remove(this.elements.size() - 1);
     }
 
     public void removeFirstElement() {
-        this.hBox.getChildren().remove(((Element)this.elements.getFirst()).getStackPane());
+        this.hBox.getChildren().remove(this.elements.getFirst().getStackPane());
         this.elements.remove(0);
     }
 
@@ -96,7 +96,7 @@ public class SortTreeNode {
     }
 
     public double getElementX(int element) {
-        return ((Element)this.elements.get(element)).getStackPane().getBoundsInParent().getMinX() + this.hBox.getBoundsInParent().getMinX() + 25.0D;
+        return this.elements.get(element).getStackPane().getBoundsInParent().getMinX() + this.hBox.getBoundsInParent().getMinX() + 25.0D;
     }
 
     public double getCenterY() {

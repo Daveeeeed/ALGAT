@@ -1,26 +1,28 @@
 package sample;
 
-import java.net.URL;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
+import java.net.URL;
+import java.util.LinkedList;
+import java.util.Random;
+import java.util.ResourceBundle;
+
 public class Lesson2Simulation implements Initializable {
+
     final int MAX_ARRAY_SIZE = 8;
     final int MAX_ELEMENT_VALUE = 100;
+
     @FXML
     private Button addButton;
     @FXML
@@ -39,6 +41,7 @@ public class Lesson2Simulation implements Initializable {
     private AnchorPane anchorPane;
     @FXML
     private VBox vBox;
+
     private LinkedList<SortTreeRow> tree;
     private int row_to_draw;
     private int totalRows;
@@ -55,185 +58,188 @@ public class Lesson2Simulation implements Initializable {
         alert.setTitle("Avviso");
         alert.setHeaderText(header);
         alert.setContentText(content);
-        alert.getButtonTypes().setAll(new ButtonType[]{button});
+        alert.getButtonTypes().setAll(button);
         alert.setGraphic(imageView);
         alert.showAndWait();
+
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.tree = new LinkedList();
-        this.tree.add(new SortTreeRow());
-        this.vBox.getChildren().add(((SortTreeRow)this.tree.getFirst()).getRowBox());
-        ((SortTreeRow)this.tree.getFirst()).addNode(new SortTreeNode());
-        ((SortTreeRow)this.tree.getFirst()).getRowBox().getChildren().add(((SortTreeRow)this.tree.getFirst()).getFirstNode().gethBox());
-        this.row_to_draw = 0;
-        this.totalRows = 0;
-        this.nextButton.setDisable(true);
+        tree = new LinkedList<>();
+        tree.add(new SortTreeRow());
+        vBox.getChildren().add(tree.getFirst().getRowBox());
+        tree.getFirst().addNode(new SortTreeNode());
+        tree.getFirst().getRowBox().getChildren().add(tree.getFirst().getFirstNode().gethBox());
+        row_to_draw = 0;
+        totalRows = 0;
+        nextButton.setDisable(true);
+
     }
 
     @FXML
     void add() {
-        if (((SortTreeRow)this.tree.getFirst()).getFirstNode().getElements().size() < 8) {
+        if (tree.getFirst().getFirstNode().getElements().size() < MAX_ARRAY_SIZE) {
             Random random = new Random();
-            ((SortTreeRow)this.tree.getFirst()).getFirstNode().addElement(random.nextInt(100));
+            tree.getFirst().getFirstNode().addElement(random.nextInt(MAX_ELEMENT_VALUE));
         } else {
-            this.displayAlert("Capienza massima dell'array raggiunta", "Avvia la simulazione o rimuovi qualche elemento.");
+            displayAlert("Capienza massima dell'array raggiunta", "Avvia la simulazione o rimuovi qualche elemento.");
         }
 
     }
 
     @FXML
     void addThis() {
-        if (((SortTreeRow)this.tree.getFirst()).getFirstNode().getElements().size() < 8) {
+        if (tree.getFirst().getFirstNode().getElements().size() < MAX_ARRAY_SIZE) {
             try {
-                int value = Integer.parseInt(this.textField.getText());
-                if (value >= 0 && value < 100) {
-                    ((SortTreeRow)this.tree.getFirst()).getFirstNode().addElement(value);
+                int value = Integer.parseInt(textField.getText());
+                if (value >= 0 && value < MAX_ELEMENT_VALUE) {
+                    tree.getFirst().getFirstNode().addElement(value);
                 } else {
-                    this.displayAlert("Formato numero errato", "Inserisci un numero compreso tra 0 e 99.");
+                    displayAlert("Formato numero errato", "Inserisci un numero compreso tra 0 e 99.");
                 }
             } catch (Exception var2) {
-                this.displayAlert("Formato numero errato", "Inserisci un numero nel formato valido.");
+                displayAlert("Formato numero errato", "Inserisci un numero nel formato valido.");
             }
         } else {
-            this.displayAlert("Capienza massima dell'array raggiunta", "Avvia la simulazione o rimuovi qualche elemento.");
+            displayAlert("Capienza massima dell'array raggiunta", "Avvia la simulazione o rimuovi qualche elemento.");
         }
 
-        this.textField.clear();
+        textField.clear();
     }
 
     @FXML
     void remove() {
-        if (((SortTreeRow)this.tree.getFirst()).getFirstNode().getElements().size() > 0) {
-            ((SortTreeRow)this.tree.getFirst()).getFirstNode().removeLastElement();
+        if (tree.getFirst().getFirstNode().getElements().size() > 0) {
+            tree.getFirst().getFirstNode().removeLastElement();
         } else {
-            this.displayAlert("Impossibile rimuovere l'elemento", "Aggiungi qualche elemento per continuare.");
+            displayAlert("Impossibile rimuovere l'elemento", "Aggiungi qualche elemento per continuare.");
         }
 
     }
 
     @FXML
     void randomize() {
-        while(((SortTreeRow)this.tree.getFirst()).getFirstNode().getElements().size() > 0) {
-            this.remove();
+        while (tree.getFirst().getFirstNode().getElements().size() > 0) {
+            remove();
         }
 
         Random random = new Random();
-        int rep = random.nextInt(8);
+        int rep = random.nextInt(MAX_ARRAY_SIZE);
 
-        for(int i = 0; i <= rep; ++i) {
-            this.add();
+        for (int i = 0; i <= rep; ++i) {
+            add();
         }
 
     }
 
     @FXML
     void start() {
-        if (((SortTreeRow)this.tree.getFirst()).getFirstNode().getElements().size() < 2) {
-            this.displayAlert("Impossibile avviare la simulazione", "Aggiungi qualche elemento per continuare.");
+        if (tree.getFirst().getFirstNode().getElements().size() < 2) {
+            displayAlert("Impossibile avviare la simulazione", "Aggiungi qualche elemento per continuare.");
         } else {
-            this.addButton.setDisable(true);
-            this.addThisButton.setDisable(true);
-            this.textField.setDisable(true);
-            this.removeButton.setDisable(true);
-            this.randomButton.setDisable(true);
-            this.startButton.setDisable(true);
-            this.nextButton.setDisable(false);
-            double halfRowsDouble = Math.log((double)((SortTreeRow)this.tree.getFirst()).getFirstNode().getElements().size()) / Math.log(2.0D);
-            this.totalRows = (int)halfRowsDouble;
-            if (halfRowsDouble % 1.0D != 0.0D) {
-                ++this.totalRows;
-            }
+            addButton.setDisable(true);
+            addThisButton.setDisable(true);
+            textField.setDisable(true);
+            removeButton.setDisable(true);
+            randomButton.setDisable(true);
+            startButton.setDisable(true);
+            nextButton.setDisable(false);
 
-            this.totalRows = 2 * this.totalRows + 1;
+            //Calculation rows needed for the graph
+            double halfRowsDouble = Math.log(tree.getFirst().getFirstNode().getElements().size()) / Math.log(2);
+            totalRows = (int) halfRowsDouble;
+            if (halfRowsDouble % 1 != 0) {
+                ++totalRows;
+            }
+            totalRows = 2 * totalRows + 1;
 
             int i;
-            for(i = 1; i < this.totalRows; ++i) {
-                this.tree.addLast(new SortTreeRow());
-                this.vBox.getChildren().add(((SortTreeRow)this.tree.getLast()).getRowBox());
+            //Adding rows to tree and vBox
+            for (i = 1; i < totalRows; ++i) {
+                tree.addLast(new SortTreeRow());
+                vBox.getChildren().add(tree.getLast().getRowBox());
             }
 
-            for(i = 0; i < this.totalRows / 2; ++i) {
-                this.divide(i);
+            for (i = 0; i < totalRows / 2; ++i) {
+                divide(i);
             }
 
-            for(i = this.totalRows / 2; i < this.totalRows - 1; ++i) {
-                this.merge(i);
+            for (i = totalRows / 2; i < totalRows - 1; ++i) {
+                merge(i);
             }
         }
 
     }
 
     private void divide(int rowIndex) {
-        Iterator var2 = ((SortTreeRow)this.tree.get(rowIndex)).getNodes().iterator();
 
-        while(true) {
-            while(var2.hasNext()) {
-                SortTreeNode node = (SortTreeNode)var2.next();
-                if (node.getElements().size() > 1) {
-                    int middle = node.getElements().size() / 2;
-                    SortTreeNode left = new SortTreeNode();
-                    left.setParent1Node(node);
-                    left.setParent2Node(node);
-                    node.setChildLeftNode(left);
+        for (SortTreeNode node : tree.get(rowIndex).getNodes()) {
+            if (node.getElements().size() > 1) {
+                int middle = node.getElements().size() / 2;
 
-                    for(int i = 0; i < middle; ++i) {
-                        left.addElement(((Element)node.getElements().get(i)).getValue());
-                    }
+                SortTreeNode left = new SortTreeNode();
+                left.setParent1Node(node);
+                left.setParent2Node(node);
+                node.setChildLeftNode(left);
 
-                    ((SortTreeRow)this.tree.get(rowIndex + 1)).addNode(left);
-                    SortTreeNode right = new SortTreeNode();
-                    right.setParent1Node(node);
-                    right.setParent2Node(node);
-                    node.setChildRightNode(right);
-
-                    for(int i = middle; i < node.getElements().size(); ++i) {
-                        right.addElement(((Element)node.getElements().get(i)).getValue());
-                    }
-
-                    ((SortTreeRow)this.tree.get(rowIndex + 1)).addNode(right);
-                } else if (rowIndex == this.tree.size() / 2 - 1) {
-                    SortTreeNode child = new SortTreeNode();
-                    child.setParent1Node(node);
-                    child.setParent2Node(node);
-                    node.setChildLeftNode(child);
-
-                    for(int i = 0; i < node.getElements().size(); ++i) {
-                        child.addElement(((Element)node.getElements().get(i)).getValue());
-                    }
-
-                    ((SortTreeRow)this.tree.get(rowIndex + 1)).addNode(child);
+                for (int i = 0; i < middle; ++i) {
+                    left.addElement(node.getElements().get(i).getValue());
                 }
-            }
 
-            return;
+                tree.get(rowIndex + 1).addNode(left);
+
+                SortTreeNode right = new SortTreeNode();
+                right.setParent1Node(node);
+                right.setParent2Node(node);
+                node.setChildRightNode(right);
+
+                for (int i = middle; i < node.getElements().size(); ++i) {
+                    right.addElement(node.getElements().get(i).getValue());
+                }
+
+                tree.get(rowIndex + 1).addNode(right);
+
+                //if node size == 1 and the row isn't the last one, the node is cloned into the row below
+            } else if (rowIndex == tree.size() / 2 - 1) {
+                SortTreeNode child = new SortTreeNode();
+                child.setParent1Node(node);
+                child.setParent2Node(node);
+                node.setChildLeftNode(child);
+
+                for (int i = 0; i < node.getElements().size(); ++i) {
+                    child.addElement(node.getElements().get(i).getValue());
+                }
+
+                tree.get(rowIndex + 1).addNode(child);
+            }
         }
+
     }
 
     private void merge(int rowIndex) {
-        for(int i = 0; i < ((SortTreeRow)this.tree.get(rowIndex)).getNodes().size(); ++i) {
+        for (int i = 0; i < tree.get(rowIndex).getNodes().size(); ++i) {
             SortTreeNode merged = new SortTreeNode();
-            if (i + 1 < ((SortTreeRow)this.tree.get(rowIndex)).getNodes().size()) {
-                merged.setParent1Node(((SortTreeRow)this.tree.get(rowIndex)).getNode(i));
-                merged.setParent2Node(((SortTreeRow)this.tree.get(rowIndex)).getNode(i + 1));
-                ((SortTreeRow)this.tree.get(rowIndex)).getNode(i).setChildRightNode(merged);
-                ((SortTreeRow)this.tree.get(rowIndex)).getNode(i).setChildLeftNode(merged);
-                ((SortTreeRow)this.tree.get(rowIndex)).getNode(i + 1).setChildRightNode(merged);
-                ((SortTreeRow)this.tree.get(rowIndex)).getNode(i + 1).setChildLeftNode(merged);
-                this.merge(((SortTreeRow)this.tree.get(rowIndex)).getNode(i), ((SortTreeRow)this.tree.get(rowIndex)).getNode(i + 1), merged);
+            if (i + 1 < tree.get(rowIndex).getNodes().size()) {
+                merged.setParent1Node(tree.get(rowIndex).getNode(i));
+                merged.setParent2Node(tree.get(rowIndex).getNode(i + 1));
+                tree.get(rowIndex).getNode(i).setChildRightNode(merged);
+                tree.get(rowIndex).getNode(i).setChildLeftNode(merged);
+                tree.get(rowIndex).getNode(i + 1).setChildRightNode(merged);
+                tree.get(rowIndex).getNode(i + 1).setChildLeftNode(merged);
+                merge(tree.get(rowIndex).getNode(i), tree.get(rowIndex).getNode(i + 1), merged);
                 ++i;
             } else {
-                merged.setParent1Node(((SortTreeRow)this.tree.get(rowIndex)).getNode(i));
-                merged.setParent2Node(((SortTreeRow)this.tree.get(rowIndex)).getNode(i));
-                ((SortTreeRow)this.tree.get(rowIndex)).getNode(i).setChildRightNode(merged);
-                ((SortTreeRow)this.tree.get(rowIndex)).getNode(i).setChildLeftNode(merged);
+                merged.setParent1Node(tree.get(rowIndex).getNode(i));
+                merged.setParent2Node(tree.get(rowIndex).getNode(i));
+                tree.get(rowIndex).getNode(i).setChildRightNode(merged);
+                tree.get(rowIndex).getNode(i).setChildLeftNode(merged);
 
-                for(int k = 0; k < ((SortTreeRow)this.tree.get(rowIndex)).getNode(i).getElements().size(); ++k) {
-                    merged.addElement(((Element)((SortTreeRow)this.tree.get(rowIndex)).getNode(i).getElements().get(k)).getValue());
+                for (int k = 0; k < tree.get(rowIndex).getNode(i).getElements().size(); ++k) {
+                    merged.addElement(tree.get(rowIndex).getNode(i).getElements().get(k).getValue());
                 }
             }
 
-            ((SortTreeRow)this.tree.get(rowIndex + 1)).addNode(merged);
+            tree.get(rowIndex + 1).addNode(merged);
         }
 
     }
@@ -241,26 +247,21 @@ public class Lesson2Simulation implements Initializable {
     @FXML
     void nextStep() {
         int i;
-        for(i = 0; ((SortTreeRow)this.tree.get(i)).getRowBox().getChildren().size() != 0; ++i) {
+        i = 0;
+        while (tree.get(i).getRowBox().getChildren().size() != 0) {
+            ++i;
         }
 
-        Iterator var2 = ((SortTreeRow)this.tree.get(i - 1)).getNodes().iterator();
-
-        SortTreeNode node;
-        while(var2.hasNext()) {
-            node = (SortTreeNode)var2.next();
-            this.drawLine(node);
+        for (SortTreeNode node : tree.get(i - 1).getNodes()) {
+            drawLine(node);
         }
 
-        var2 = ((SortTreeRow)this.tree.get(i)).getNodes().iterator();
-
-        while(var2.hasNext()) {
-            node = (SortTreeNode)var2.next();
-            ((SortTreeRow)this.tree.get(i)).getRowBox().getChildren().add(node.gethBox());
+        for (SortTreeNode node : tree.get(i).getNodes()) {
+            tree.get(i).getRowBox().getChildren().add(node.gethBox());
         }
 
-        if (i + 1 >= this.tree.size()) {
-            this.nextButton.setDisable(true);
+        if (i + 1 >= tree.size()) {
+            nextButton.setDisable(true);
         }
 
     }
@@ -269,27 +270,27 @@ public class Lesson2Simulation implements Initializable {
         int left_index = 0;
         int right_index = 0;
 
-        while(left_index < left.getElements().size() && right_index < right.getElements().size()) {
+        while (left_index < left.getElements().size() && right_index < right.getElements().size()) {
             if (left_index < left.getElements().size() && right_index < right.getElements().size()) {
-                if (((Element)left.getElements().get(left_index)).getValue() < ((Element)right.getElements().get(right_index)).getValue()) {
-                    merged.addElement(((Element)left.getElements().get(left_index)).getValue());
+                if (left.getElements().get(left_index).getValue() < right.getElements().get(right_index).getValue()) {
+                    merged.addElement(left.getElements().get(left_index).getValue());
                     ++left_index;
                 } else {
-                    merged.addElement(((Element)right.getElements().get(right_index)).getValue());
+                    merged.addElement(right.getElements().get(right_index).getValue());
                     ++right_index;
                 }
             }
 
             if (left_index >= left.getElements().size()) {
-                while(right_index < right.getElements().size()) {
-                    merged.addElement(((Element)right.getElements().get(right_index)).getValue());
+                while (right_index < right.getElements().size()) {
+                    merged.addElement(right.getElements().get(right_index).getValue());
                     ++right_index;
                 }
             }
 
             if (right_index >= right.getElements().size()) {
-                while(left_index < left.getElements().size()) {
-                    merged.addElement(((Element)left.getElements().get(left_index)).getValue());
+                while (left_index < left.getElements().size()) {
+                    merged.addElement(left.getElements().get(left_index).getValue());
                     ++left_index;
                 }
             }
@@ -303,23 +304,23 @@ public class Lesson2Simulation implements Initializable {
             Line right_line;
             if (node.getChildLeftNode() != null) {
                 right_depth = node.getNodeDepth(node.getChildLeftNode());
-                if (right_depth == this.row_to_draw) {
-                    right_line = new Line(node.getCenterX(), node.getCenterY() + 30.0D, node.getChildLeftNode().getCenterX(), node.getChildLeftNode().getCenterY() - 30.0D);
-                    this.anchorPane.getChildren().add(right_line);
+                if (right_depth == row_to_draw) {
+                    right_line = new Line(node.getCenterX(), node.getCenterY() + 30, node.getChildLeftNode().getCenterX(), node.getChildLeftNode().getCenterY() - 30);
+                    anchorPane.getChildren().add(right_line);
                     right_line.toBack();
-                } else if (right_depth < this.row_to_draw) {
-                    this.drawLine(node.getChildLeftNode());
+                } else if (right_depth < row_to_draw) {
+                    drawLine(node.getChildLeftNode());
                 }
             }
 
             if (node.getChildRightNode() != null) {
                 right_depth = node.getNodeDepth(node.getChildRightNode());
-                if (right_depth == this.row_to_draw) {
-                    right_line = new Line(node.getCenterX(), node.getCenterY() + 30.0D, node.getChildRightNode().getCenterX(), node.getChildRightNode().getCenterY() - 30.0D);
-                    this.anchorPane.getChildren().add(right_line);
+                if (right_depth == row_to_draw) {
+                    right_line = new Line(node.getCenterX(), node.getCenterY() + 30, node.getChildRightNode().getCenterX(), node.getChildRightNode().getCenterY() - 30);
+                    anchorPane.getChildren().add(right_line);
                     right_line.toBack();
-                } else if (right_depth < this.row_to_draw) {
-                    this.drawLine(node.getChildRightNode());
+                } else if (right_depth < row_to_draw) {
+                    drawLine(node.getChildRightNode());
                 }
             }
         }

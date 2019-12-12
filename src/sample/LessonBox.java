@@ -96,7 +96,7 @@ public class LessonBox implements Initializable {
             this.nextButton.setDisable(true);
             this.lessonText.setVisible(false);
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource("Lesson" + this.currentLessonNumber + "Simulation.fxml"));
-            Parent root = (Parent)loader.load();
+            Parent root = loader.load();
             SubScene subScene1 = new SubScene(root, 878.0D, 469.0D);
             this.anchorPane.getChildren().add(subScene1);
             AnchorPane.setRightAnchor(subScene1, 0.0D);
@@ -125,12 +125,12 @@ public class LessonBox implements Initializable {
             alert.setTitle("Avviso");
             alert.setHeaderText("Nessuna risposta selezionata");
             alert.setContentText("Seleziona una risposta per continuare.");
-            alert.getButtonTypes().setAll(new ButtonType[]{button});
+            alert.getButtonTypes().setAll(button);
             alert.setGraphic(imageView);
             alert.showAndWait();
         } else {
             if (this.toggleGroup.getSelectedToggle() == this.radioButtons[4]) {
-                ((LessonPage)this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1)).setCorrectlyAnswered(true);
+                this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1).setCorrectlyAnswered(true);
                 imageView = new ImageView("/immagini/alert3.png");
                 alert.setContentText("Risposta corretta.");
             } else {
@@ -142,12 +142,12 @@ public class LessonBox implements Initializable {
             imageView.setFitHeight(50.0D);
             alert.setTitle("Avviso");
             alert.setHeaderText("Hai risposta alla domanda");
-            alert.getButtonTypes().setAll(new ButtonType[]{button});
+            alert.getButtonTypes().setAll(button);
             alert.setGraphic(imageView);
             alert.showAndWait();
             this.setSelectedButton();
             this.toggleGroup.getSelectedToggle().setSelected(false);
-            ((LessonPage)this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1)).setAlreadyAnswered(true);
+            this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1).setAlreadyAnswered(true);
             if (this.currentPageNumber < this.lessonsLists[this.currentLessonNumber].getLesson().size()) {
                 this.loadLesson(this.currentLessonNumber, this.currentPageNumber + 1);
             } else {
@@ -162,17 +162,17 @@ public class LessonBox implements Initializable {
                     do {
                         if (!var8.hasNext()) {
                             if (completed) {
-                                ((CheckBox)((VBox)((Tab)tabPane.getTabs().get(0)).getContent()).getChildren().get(3)).setSelected(true);
-                                ((CheckBox)((VBox)((Tab)tabPane.getTabs().get(0)).getContent()).getChildren().get(3)).setText("Lezione completata");
-                                ((CheckBox)((VBox)((Tab)tabPane.getTabs().get(0)).getContent()).getChildren().get(8)).setSelected(true);
-                                ((CheckBox)((VBox)((Tab)tabPane.getTabs().get(0)).getContent()).getChildren().get(8)).setText(Integer.toString(this.currentLessonNumber));
+                                ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(3)).setSelected(true);
+                                ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(3)).setText("Lezione completata");
+                                ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(8)).setSelected(true);
+                                ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(8)).setText(Integer.toString(this.currentLessonNumber));
                             }
 
                             tabPane.getTabs().remove(tabPane.getSelectionModel().getSelectedItem());
                             tabPane.getSelectionModel().selectFirst();
                             alert.setHeaderText("Lezione terminata");
                             alert.setContentText("Hai risposto correttamente a " + correct + " domande su " + total);
-                            alert.getButtonTypes().setAll(new ButtonType[]{button});
+                            alert.getButtonTypes().setAll(button);
                             alert.setGraphic(imageView);
                             alert.showAndWait();
                             return;
@@ -196,19 +196,19 @@ public class LessonBox implements Initializable {
     void loadLesson(int lessonNumber, int destinationPageNr) throws IOException {
         this.currentLessonNumber = lessonNumber;
         this.currentPageNumber = destinationPageNr;
-        this.currentLessonType = ((LessonPage)this.lessonsLists[lessonNumber].getLesson().get(destinationPageNr - 1)).getType();
+        this.currentLessonType = this.lessonsLists[lessonNumber].getLesson().get(destinationPageNr - 1).getType();
         this.setLessonButtons();
         this.setLessonContent();
     }
 
     private void setLessonButtons() {
-        if (this.currentLessonType == 4 && !((LessonPage)this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1)).isAlreadyAnswered()) {
+        if (this.currentLessonType == 4 && !this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1).isAlreadyAnswered()) {
             this.confirmButton.setDisable(false);
         } else {
             this.confirmButton.setDisable(true);
         }
 
-        if (this.currentPageNumber > 1 && (this.currentLessonType != 4 || ((LessonPage)this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 2)).getType() == 4)) {
+        if (this.currentPageNumber > 1 && (this.currentLessonType != 4 || this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 2).getType() == 4)) {
             this.prevButton.setDisable(false);
         } else {
             this.prevButton.setDisable(true);
@@ -226,7 +226,7 @@ public class LessonBox implements Initializable {
             this.simulationButton.setDisable(false);
         }
 
-        if (this.currentLessonType < 4 && ((LessonPage)this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber)).getType() == 4) {
+        if (this.currentLessonType < 4 && this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber).getType() == 4) {
             this.nextButton.setText("Passa ai quiz");
         } else {
             this.nextButton.setText("Successivo");
@@ -295,14 +295,14 @@ public class LessonBox implements Initializable {
                 this.radioButtons[i].setText(line);
             }
 
-            if (((LessonPage)this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1)).isAlreadyAnswered()) {
+            if (this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1).isAlreadyAnswered()) {
                 this.radioButtons[i].setDisable(true);
             } else {
                 this.radioButtons[i].setDisable(false);
             }
         }
 
-        this.toggleGroup.selectToggle(((LessonPage)this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1)).getSelectedButton());
+        this.toggleGroup.selectToggle(this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1).getSelectedButton());
         this.lessonTitle.setText("Domande");
     }
 
@@ -323,6 +323,6 @@ public class LessonBox implements Initializable {
     }
 
     private void setSelectedButton() {
-        ((LessonPage)this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1)).setSelectedButton(this.toggleGroup.getSelectedToggle());
+        this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1).setSelectedButton(this.toggleGroup.getSelectedToggle());
     }
 }

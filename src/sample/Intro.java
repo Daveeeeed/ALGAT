@@ -10,13 +10,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Intro {
+
     public Intro() {
     }
 
     @FXML
     void goToMenu(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Home.fxml"));
-        Parent parent = (Parent)fxmlLoader.load();
+        Parent parent = fxmlLoader.load();
         Scene scene = new Scene(parent);
         Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         stage.setScene(scene);

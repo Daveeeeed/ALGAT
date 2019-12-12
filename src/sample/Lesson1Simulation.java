@@ -26,11 +26,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class Lesson1Simulation implements Initializable {
+
     final int J_INDEX_Y = 115;
     final int I_INDEX_Y = 85;
     final int TEXT_Y = 180;
     final int MAX_ARRAY_SIZE = 8;
     final int MAX_ELEMENT_VALUE = 100;
+
     @FXML
     private VBox vBoxRoot;
     @FXML
@@ -61,6 +63,7 @@ public class Lesson1Simulation implements Initializable {
     private Label j_index_value;
     @FXML
     private Label pin_index_value;
+
     private LinkedList<SortTreeRow> tree;
     private Label i_pos;
     private Label j_pos;
@@ -82,18 +85,19 @@ public class Lesson1Simulation implements Initializable {
         alert.setTitle("Avviso");
         alert.setHeaderText(header);
         alert.setContentText(content);
-        alert.getButtonTypes().setAll(new ButtonType[]{button});
+        alert.getButtonTypes().setAll(button);
         alert.setGraphic(imageView);
         alert.showAndWait();
     }
 
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("FATTO");
-        this.tree = new LinkedList();
+        this.tree = new LinkedList<>();
         this.tree.add(new SortTreeRow());
-        this.vBox.getChildren().add(((SortTreeRow)this.tree.getFirst()).getRowBox());
-        ((SortTreeRow)this.tree.getFirst()).addNode(new SortTreeNode());
-        ((SortTreeRow)this.tree.getFirst()).getRowBox().getChildren().add(((SortTreeRow)this.tree.getFirst()).getFirstNode().gethBox());
+        this.vBox.getChildren().add(this.tree.getFirst().getRowBox());
+        this.tree.getFirst().addNode(new SortTreeNode());
+        this.tree.getFirst().getRowBox().getChildren().add(this.tree.getFirst().getFirstNode().gethBox());
         this.i_index_value.setText("---");
         this.j_index_value.setText("---");
         this.pin_index_value.setText("---");
@@ -103,9 +107,9 @@ public class Lesson1Simulation implements Initializable {
 
     @FXML
     void add() {
-        if (((SortTreeRow)this.tree.getFirst()).getFirstNode().getElements().size() < 8) {
+        if (this.tree.getFirst().getFirstNode().getElements().size() < MAX_ARRAY_SIZE) {
             Random random = new Random();
-            ((SortTreeRow)this.tree.getFirst()).getFirstNode().addElement(random.nextInt(100));
+            this.tree.getFirst().getFirstNode().addElement(random.nextInt(MAX_ELEMENT_VALUE));
         } else {
             this.displayAlert("Capienza massima dell'array raggiunta", "Avvia la simulazione o rimuovi qualche elemento.");
         }
@@ -114,11 +118,11 @@ public class Lesson1Simulation implements Initializable {
 
     @FXML
     void addThis() {
-        if (((SortTreeRow)this.tree.getFirst()).getFirstNode().getElements().size() < 8) {
+        if (this.tree.getFirst().getFirstNode().getElements().size() < MAX_ARRAY_SIZE) {
             try {
                 int value = Integer.parseInt(this.textField.getText());
-                if (value >= 0 && value < 100) {
-                    ((SortTreeRow)this.tree.getFirst()).getFirstNode().addElement(value);
+                if (value >= 0 && value < MAX_ELEMENT_VALUE) {
+                    this.tree.getFirst().getFirstNode().addElement(value);
                 } else {
                     this.displayAlert("Formato numero errato", "Inserisci un numero compreso tra 0 e 99.");
                 }
@@ -134,8 +138,8 @@ public class Lesson1Simulation implements Initializable {
 
     @FXML
     void remove() {
-        if (((SortTreeRow)this.tree.getFirst()).getFirstNode().getElements().size() > 0) {
-            ((SortTreeRow)this.tree.getFirst()).getFirstNode().removeLastElement();
+        if (this.tree.getFirst().getFirstNode().getElements().size() > 0) {
+            this.tree.getFirst().getFirstNode().removeLastElement();
         } else {
             this.displayAlert("Impossibile rimuovere l'elemento", "Aggiungi qualche elemento per continuare.");
         }
@@ -144,12 +148,12 @@ public class Lesson1Simulation implements Initializable {
 
     @FXML
     void randomize() {
-        while(((SortTreeRow)this.tree.getFirst()).getFirstNode().getElements().size() > 0) {
+        while(this.tree.getFirst().getFirstNode().getElements().size() > 0) {
             this.remove();
         }
 
         Random random = new Random();
-        int rep = random.nextInt(8);
+        int rep = random.nextInt(MAX_ARRAY_SIZE);
 
         for(int i = 0; i <= rep; ++i) {
             this.add();
@@ -159,7 +163,7 @@ public class Lesson1Simulation implements Initializable {
 
     @FXML
     void start() {
-        if (((SortTreeNode)((SortTreeRow)this.tree.getFirst()).getNodes().getFirst()).getElements().size() > 0) {
+        if (this.tree.getFirst().getNodes().getFirst().getElements().size() > 0) {
             this.addButton.setDisable(true);
             this.addThisButton.setDisable(true);
             this.textField.setDisable(true);
@@ -170,7 +174,7 @@ public class Lesson1Simulation implements Initializable {
             this.i_val = 0;
             this.j_val = 0;
             this.pin_val = 0;
-            ((SortTreeRow)this.tree.getFirst()).getFirstNode().pinPassive();
+            this.tree.getFirst().getFirstNode().pinPassive();
             this.i_pos = new Label("i");
             this.i_pos.setFont(Font.font("Droid Sans Mono", FontWeight.BOLD, 28.0D));
             this.i_pos.setAlignment(Pos.TOP_CENTER);
@@ -180,10 +184,10 @@ public class Lesson1Simulation implements Initializable {
             this.description = new Label("SIMULAZIONE AVVIATA\nPREMI IL BOTTONE \"PROSSIMO STEP\" PER PROSEGUIRE\nPER OGNI PASSO AL PRIMO CLICK SARA' VISUALIZZATO IL CODICE,\nCHE VERRA' ESEGUITO AL SECONDO CLICK");
             this.description.setFont(Font.font("Droid Sans Mono", FontWeight.BOLD, 18.0D));
             this.description.setAlignment(Pos.CENTER);
-            this.anchorPane.getChildren().addAll(new Node[]{this.i_pos, this.j_pos, this.description});
-            this.i_pos.setLayoutY(85.0D);
-            this.j_pos.setLayoutY(115.0D);
-            this.description.setLayoutY(180.0D);
+            this.anchorPane.getChildren().addAll(this.i_pos, this.j_pos, this.description);
+            this.i_pos.setLayoutY(I_INDEX_Y);
+            this.j_pos.setLayoutY(J_INDEX_Y);
+            this.description.setLayoutY(TEXT_Y);
             AnchorPane.setLeftAnchor(this.description, 0.0D);
             AnchorPane.setRightAnchor(this.description, 0.0D);
             this.updateIndex();
@@ -194,7 +198,7 @@ public class Lesson1Simulation implements Initializable {
     }
 
     private boolean isILowerThanPin() {
-        return ((Element)((SortTreeNode)((SortTreeRow)this.tree.getFirst()).getNodes().getFirst()).getElements().get(this.i_val)).getValue() < ((Element)((SortTreeNode)((SortTreeRow)this.tree.getFirst()).getNodes().getFirst()).getElements().get(this.pin_val)).getValue();
+        return this.tree.getFirst().getNodes().getFirst().getElements().get(this.i_val).getValue() < this.tree.getFirst().getNodes().getFirst().getElements().get(this.pin_val).getValue();
     }
 
     @FXML
@@ -206,7 +210,7 @@ public class Lesson1Simulation implements Initializable {
                         this.description.setText("");
                         this.isDescriptionEmpty = true;
                         ++this.j_val;
-                        ((SortTreeRow)this.tree.getFirst()).getFirstNode().swapElements(this.j_val, this.i_val);
+                        this.tree.getFirst().getFirstNode().swapElements(this.j_val, this.i_val);
                         ++this.i_val;
                     } else {
                         this.description.setText("A[i] < A[perno] QUINDI:\nj ← j+1,\nA[i] ↔ A[j],\ni ← i+1");
@@ -221,13 +225,13 @@ public class Lesson1Simulation implements Initializable {
                     this.isDescriptionEmpty = false;
                 }
 
-                if (this.i_val >= ((SortTreeNode)((SortTreeRow)this.tree.getFirst()).getNodes().getFirst()).getElements().size()) {
+                if (this.i_val >= this.tree.getFirst().getNodes().getFirst().getElements().size()) {
                     this.i_val = -1;
                 }
             } else if (!this.isDescriptionEmpty) {
                 this.description.setText("");
                 this.isDescriptionEmpty = true;
-                ((SortTreeRow)this.tree.getFirst()).getFirstNode().swapElements(this.j_val, this.pin_val);
+                this.tree.getFirst().getFirstNode().swapElements(this.j_val, this.pin_val);
                 this.pin_val = -1;
                 this.nextButton.setText("Risolvi Successivi");
             } else {
@@ -250,29 +254,29 @@ public class Lesson1Simulation implements Initializable {
 
     private void updateIndex() {
         if (this.i_val == -1) {
-            this.i_index_value.setText(Integer.toString(((SortTreeNode)((SortTreeRow)this.tree.getFirst()).getNodes().getFirst()).getElements().size() - 1));
+            this.i_index_value.setText(Integer.toString(this.tree.getFirst().getNodes().getFirst().getElements().size() - 1));
         } else {
             this.i_index_value.setText(Integer.toString(this.i_val));
-            this.i_pos.setLayoutX(((SortTreeNode)((SortTreeRow)this.tree.getFirst()).getNodes().getFirst()).getElementX(this.i_val));
+            this.i_pos.setLayoutX(this.tree.getFirst().getNodes().getFirst().getElementX(this.i_val));
         }
 
         this.j_index_value.setText(Integer.toString(this.j_val));
-        this.j_pos.setLayoutX(((SortTreeNode)((SortTreeRow)this.tree.getFirst()).getNodes().getFirst()).getElementX(this.j_val));
+        this.j_pos.setLayoutX(this.tree.getFirst().getNodes().getFirst().getElementX(this.j_val));
 
         int i;
-        for(i = ((SortTreeNode)((SortTreeRow)this.tree.getFirst()).getNodes().getFirst()).getElements().size() - 1; i > this.j_val; --i) {
-            ((Element)((SortTreeNode)((SortTreeRow)this.tree.getFirst()).getNodes().getFirst()).getElements().get(i)).getRectangle().setFill(Color.LIGHTGRAY);
+        for(i = this.tree.getFirst().getNodes().getFirst().getElements().size() - 1; i > this.j_val; --i) {
+            this.tree.getFirst().getNodes().getFirst().getElements().get(i).getRectangle().setFill(Color.LIGHTGRAY);
         }
 
         for(i = 0; i <= this.j_val; ++i) {
-            ((Element)((SortTreeNode)((SortTreeRow)this.tree.getFirst()).getNodes().getFirst()).getElements().get(i)).getRectangle().setFill(Color.LIGHTPINK);
+            this.tree.getFirst().getNodes().getFirst().getElements().get(i).getRectangle().setFill(Color.LIGHTPINK);
         }
 
         if (this.pin_val == -1) {
-            ((Element)((SortTreeNode)((SortTreeRow)this.tree.getFirst()).getNodes().getFirst()).getElements().get(this.j_val)).getRectangle().setFill(Color.YELLOW);
+            this.tree.getFirst().getNodes().getFirst().getElements().get(this.j_val).getRectangle().setFill(Color.YELLOW);
             this.pin_index_value.setText(Integer.toString(this.j_val));
         } else {
-            ((Element)((SortTreeNode)((SortTreeRow)this.tree.getFirst()).getNodes().getFirst()).getElements().get(this.pin_val)).getRectangle().setFill(Color.YELLOW);
+            this.tree.getFirst().getNodes().getFirst().getElements().get(this.pin_val).getRectangle().setFill(Color.YELLOW);
             this.pin_index_value.setText(Integer.toString(this.pin_val));
         }
 
@@ -280,8 +284,8 @@ public class Lesson1Simulation implements Initializable {
 
     private void solveLastRow() {
         this.tree.addLast(new SortTreeRow());
-        this.vBox.getChildren().add(((SortTreeRow)this.tree.getLast()).getRowBox());
-        Iterator var1 = ((SortTreeRow)this.tree.get(this.tree.size() - 2)).getNodes().iterator();
+        this.vBox.getChildren().add(this.tree.getLast().getRowBox());
+        Iterator var1 = this.tree.get(this.tree.size() - 2).getNodes().iterator();
 
         while(true) {
             SortTreeNode node;
@@ -293,7 +297,7 @@ public class Lesson1Simulation implements Initializable {
                 node = (SortTreeNode)var1.next();
             } while(node.getElements().size() <= 1);
 
-            if (node != ((SortTreeRow)this.tree.getFirst()).getFirstNode()) {
+            if (node != this.tree.getFirst().getFirstNode()) {
                 node.pinActive();
             }
 
@@ -304,11 +308,11 @@ public class Lesson1Simulation implements Initializable {
 
             for(int i = 0; i < node.getPinIndex(); ++i) {
                 System.out.println("DONE2");
-                left.addElement(((Element)node.getElements().get(i)).getValue());
+                left.addElement(node.getElements().get(i).getValue());
             }
 
-            ((SortTreeRow)this.tree.getLast()).addNode(left);
-            ((SortTreeRow)this.tree.getLast()).getRowBox().getChildren().add(left.gethBox());
+            this.tree.getLast().addNode(left);
+            this.tree.getLast().getRowBox().getChildren().add(left.gethBox());
             SortTreeNode right = new SortTreeNode();
             right.setParent1Node(node);
             right.setParent2Node(node);
@@ -316,11 +320,11 @@ public class Lesson1Simulation implements Initializable {
 
             for(int i = node.getPinIndex() + 1; i < node.getElements().size(); ++i) {
                 System.out.println("DONE3");
-                right.addElement(((Element)node.getElements().get(i)).getValue());
+                right.addElement(node.getElements().get(i).getValue());
             }
 
-            ((SortTreeRow)this.tree.getLast()).addNode(right);
-            ((SortTreeRow)this.tree.getLast()).getRowBox().getChildren().add(right.gethBox());
+            this.tree.getLast().addNode(right);
+            this.tree.getLast().getRowBox().getChildren().add(right.gethBox());
         }
     }
 }
