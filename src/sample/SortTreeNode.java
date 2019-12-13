@@ -18,8 +18,8 @@ public class SortTreeNode {
     private SortTreeNode childRightNode = null;
     private SortTreeNode parent1Node = null;
     private SortTreeNode parent2Node = null;
-    private LinkedList<Element> elements = new LinkedList();
-    private HBox hBox = new HBox();
+    private final LinkedList<Element> elements = new LinkedList<>();
+    private final HBox hBox = new HBox();
     private int pinIndex;
 
     public SortTreeNode() {
@@ -42,7 +42,6 @@ public class SortTreeNode {
 
         this.swapElements(this.pinIndex, j);
         this.pinIndex = j;
-        System.out.println(this.pinIndex);
     }
 
     public void pinPassive() {
@@ -55,7 +54,6 @@ public class SortTreeNode {
         }
 
         this.pinIndex = j;
-        System.out.println(this.pinIndex);
     }
 
     public void swapElements(int first, int second) {
@@ -69,29 +67,35 @@ public class SortTreeNode {
         this.hBox.getChildren().add(this.elements.getLast().getStackPane());
     }
 
+    public void addSortedElement(int value) {
+        boolean added = false;
+        int i = 0;
+        while (!added && i < elements.size()){
+            if (value < elements.get(i).getValue()) {
+                elements.add(i, new Element(value));
+                added = true;
+            }
+            ++i;
+        }
+        if (!added) elements.addLast(new Element(value));
+    }
+
     public void removeLastElement() {
         this.hBox.getChildren().remove(this.elements.getLast().getStackPane());
         this.elements.remove(this.elements.size() - 1);
-    }
-
-    public void removeFirstElement() {
-        this.hBox.getChildren().remove(this.elements.getFirst().getStackPane());
-        this.elements.remove(0);
     }
 
     public int getNodeDepth(SortTreeNode node) {
         return node.getParent1Node() == null && node.getParent2Node() == null ? 0 : 1 + Math.max(this.getNodeDepth(node.getParent1Node()), this.getNodeDepth(node.getParent2Node()));
     }
 
+    public double getXof(int element){
+        return hBox.getLayoutX() + 56 * element;
+    }
+
     public double getCenterX() {
         double a = this.hBox.getBoundsInParent().getMinX() + this.hBox.getParent().getBoundsInParent().getMinX() + this.hBox.getParent().getParent().getBoundsInParent().getMinX();
         double b = this.hBox.getBoundsInParent().getMaxX() + this.hBox.getParent().getBoundsInParent().getMinX() + this.hBox.getParent().getParent().getBoundsInParent().getMinX();
-        return (a + b) / 2.0D;
-    }
-
-    public double getElementY() {
-        double a = this.hBox.getBoundsInParent().getMinX();
-        double b = this.hBox.getBoundsInParent().getMaxY();
         return (a + b) / 2.0D;
     }
 

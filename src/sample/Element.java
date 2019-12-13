@@ -11,9 +11,9 @@ import javafx.scene.text.FontWeight;
 public class Element {
 
     private int value;
-    private StackPane stackPane;
-    private Label label;
-    private Rectangle rectangle;
+    private final StackPane stackPane;
+    private final Label label;
+    private final Rectangle rectangle;
 
     Element(int value) {
         this.value = value;

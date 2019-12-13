@@ -17,8 +17,6 @@ import javafx.scene.image.ImageView;
 
 public class Home implements Initializable {
 
-    private final int LESSON_NR = 3;
-
     @FXML
     private TabPane tabPane;
     @FXML
@@ -38,6 +36,7 @@ public class Home implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        int LESSON_NR = 3;
         pagination.setMaxPageIndicatorCount(LESSON_NR);
         images = new Image[LESSON_NR];
         IntStream.range(0, images.length).forEach((i) -> images[i] = new Image("/immagini/" + i + ".png"));
@@ -46,7 +45,7 @@ public class Home implements Initializable {
     }
 
     @FXML
-    void goToLesson() throws IOException {
+    public void goToLesson() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LessonBox.fxml"));
         Parent root = fxmlLoader.load();
         LessonBox lessonBox = fxmlLoader.getController();
@@ -57,7 +56,7 @@ public class Home implements Initializable {
     }
 
     @FXML
-    void updateImage() {
+    public void updateImage() {
         if (verify.isSelected()) {
             verify.setSelected(false);
             lessonCompleted[Integer.parseInt(verify.getText())] = true;

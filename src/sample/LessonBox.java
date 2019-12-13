@@ -1,34 +1,24 @@
 package sample;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.SubScene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class LessonBox implements Initializable {
-    private final int LESSON_NR = 3;
+
     @FXML
     private AnchorPane anchorPaneRoot;
     @FXML
@@ -55,16 +45,15 @@ public class LessonBox implements Initializable {
     private Button simulationButton;
     @FXML
     private Button confirmButton;
+
     private ToggleGroup toggleGroup;
     private RadioButton[] radioButtons;
     private Lesson[] lessonsLists;
-    private int currentLessonType;
+    private int currentPageType;
     private int currentLessonNumber;
     private int currentPageNumber;
 
-    public LessonBox() {
-    }
-
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.lessonsLists = new Lesson[3];
         this.lessonsLists[0] = new Lesson(new int[]{1, 1, 1, 1, 2, 1, 1, 4, 4, 4, 4, 4});
@@ -79,17 +68,17 @@ public class LessonBox implements Initializable {
     }
 
     @FXML
-    void goToLastPage() throws IOException {
+    public void goToLastPage() throws IOException {
         this.loadLesson(this.currentLessonNumber, this.currentPageNumber - 1);
     }
 
     @FXML
-    void goToNextPage() throws IOException {
+    public void goToNextPage() throws IOException {
         this.loadLesson(this.currentLessonNumber, this.currentPageNumber + 1);
     }
 
     @FXML
-    void startSimulation() throws IOException {
+    public void startSimulation() throws IOException {
         if (this.simulationButton.getText().equals("Avvia simulazione")) {
             this.simulationButton.setText("Termina simulazione");
             this.prevButton.setDisable(true);
@@ -97,12 +86,12 @@ public class LessonBox implements Initializable {
             this.lessonText.setVisible(false);
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource("Lesson" + this.currentLessonNumber + "Simulation.fxml"));
             Parent root = loader.load();
-            SubScene subScene1 = new SubScene(root, 878.0D, 469.0D);
+            SubScene subScene1 = new SubScene(root, 878.0, 469.0);
             this.anchorPane.getChildren().add(subScene1);
-            AnchorPane.setRightAnchor(subScene1, 0.0D);
-            AnchorPane.setLeftAnchor(subScene1, 0.0D);
-            AnchorPane.setTopAnchor(subScene1, 0.0D);
-            AnchorPane.setBottomAnchor(subScene1, 0.0D);
+            AnchorPane.setRightAnchor(subScene1, 0.0);
+            AnchorPane.setLeftAnchor(subScene1, 0.0);
+            AnchorPane.setTopAnchor(subScene1, 0.0);
+            AnchorPane.setBottomAnchor(subScene1, 0.0);
         } else {
             this.simulationButton.setText("Avvia simulazione");
             this.prevButton.setDisable(false);
@@ -114,101 +103,81 @@ public class LessonBox implements Initializable {
     }
 
     @FXML
-    void checkCorrectAnswer() throws IOException {
-        ButtonType button = new ButtonType("OK");
-        Alert alert = new Alert(AlertType.NONE);
-        ImageView imageView;
-        if (this.toggleGroup.getSelectedToggle() == null) {
-            imageView = new ImageView("/immagini/alert2.png");
-            imageView.setPreserveRatio(true);
-            imageView.setFitHeight(50.0D);
-            alert.setTitle("Avviso");
-            alert.setHeaderText("Nessuna risposta selezionata");
-            alert.setContentText("Seleziona una risposta per continuare.");
-            alert.getButtonTypes().setAll(button);
-            alert.setGraphic(imageView);
-            alert.showAndWait();
+    public void checkCorrectAnswer() throws IOException {
+        //Risposta non selezionata
+        if (toggleGroup.getSelectedToggle() == null) {
+            Alert.displayAlert("Nessuna risposta selezionata", "Seleziona una risposta per continuare.");
+            //Risposta esatta
+        } else if (toggleGroup.getSelectedToggle() == radioButtons[4]) {
+            setSelectedButton();
+            lessonsLists[currentLessonNumber].getLesson().get(currentPageNumber - 1).setAlreadyAnswered(true);
+            Alert.displayAlert("Hai risposto alla domanda", "Risposta corretta!");
+            //Non ultima pagina
+            if (currentPageNumber < lessonsLists[currentLessonNumber].getLesson().size()) {
+                loadLesson(currentLessonNumber, currentPageNumber + 1);
+            //Ultima pagina
+            } else {
+                closeLesson();
+            }
+            //Risposta sbagliata
         } else {
-            if (this.toggleGroup.getSelectedToggle() == this.radioButtons[4]) {
-                this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1).setCorrectlyAnswered(true);
-                imageView = new ImageView("/immagini/alert3.png");
-                alert.setContentText("Risposta corretta.");
-            } else {
-                imageView = new ImageView("/immagini/alert1.png");
-                alert.setContentText("Risposta sbagliata.");
-            }
-
-            imageView.setPreserveRatio(true);
-            imageView.setFitHeight(50.0D);
-            alert.setTitle("Avviso");
-            alert.setHeaderText("Hai risposta alla domanda");
-            alert.getButtonTypes().setAll(button);
-            alert.setGraphic(imageView);
-            alert.showAndWait();
-            this.setSelectedButton();
-            this.toggleGroup.getSelectedToggle().setSelected(false);
-            this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1).setAlreadyAnswered(true);
-            if (this.currentPageNumber < this.lessonsLists[this.currentLessonNumber].getLesson().size()) {
-                this.loadLesson(this.currentLessonNumber, this.currentPageNumber + 1);
-            } else {
-                TabPane tabPane = (TabPane)this.anchorPaneRoot.getParent().getParent();
-                boolean completed = true;
-                int correct = 0;
-                int total = 0;
-                Iterator var8 = this.lessonsLists[this.currentLessonNumber].getLesson().iterator();
-
-                while(true) {
-                    LessonPage lessonPages;
-                    do {
-                        if (!var8.hasNext()) {
-                            if (completed) {
-                                ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(3)).setSelected(true);
-                                ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(3)).setText("Lezione completata");
-                                ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(8)).setSelected(true);
-                                ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(8)).setText(Integer.toString(this.currentLessonNumber));
-                            }
-
-                            tabPane.getTabs().remove(tabPane.getSelectionModel().getSelectedItem());
-                            tabPane.getSelectionModel().selectFirst();
-                            alert.setHeaderText("Lezione terminata");
-                            alert.setContentText("Hai risposto correttamente a " + correct + " domande su " + total);
-                            alert.getButtonTypes().setAll(button);
-                            alert.setGraphic(imageView);
-                            alert.showAndWait();
-                            return;
-                        }
-
-                        lessonPages = (LessonPage)var8.next();
-                    } while(lessonPages.getType() != 4);
-
-                    completed = completed && lessonPages.isCorrectlyAnswered();
-                    if (lessonPages.isCorrectlyAnswered()) {
-                        ++correct;
-                    }
-
-                    ++total;
-                }
-            }
+            Alert.displayAlert("Hai risposto alla domanda", "Risposta sbagliata.");
+            closeLesson();
         }
 
     }
 
+    /**
+     * Chiude la Tab della lezione corrente riportando alla Home.
+     * Visualizza un Alert indicando quante risposte sono state date correttamente.
+     */
+    private void closeLesson(){
+        TabPane tabPane = (TabPane)this.anchorPaneRoot.getParent().getParent();
+        int correct = 0;
+        int total = 0;
+        for (LessonPage page : lessonsLists[currentLessonNumber].getLesson()){
+            if (page.getType() == 4){
+                ++total;
+                if (page.isAlreadyAnswered()) ++correct;
+            }
+        }
+        Alert.displayAlert("Lezione terminata", "Hai risposto correttamente a " + correct + " domande su " + total);
+        tabPane.getTabs().remove(tabPane.getSelectionModel().getSelectedItem());
+        tabPane.getSelectionModel().selectFirst();
+        if (correct == total) {
+            ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(3)).setSelected(true);
+            ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(3)).setText("Lezione completata");
+            ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(8)).setSelected(true);
+            ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(8)).setText(Integer.toString(this.currentLessonNumber));
+        }
+    }
+
+    /**
+     * Imposta l'impaginazione della pagina (destinationPageNr) della lezione (lessonNumber)
+     *
+     * @param lessonNumber      indice della lezione da caricare
+     * @param destinationPageNr indice della pagine della lezione da caricare
+     * @throws IOException      necessario per setLessonContent()
+     */
     void loadLesson(int lessonNumber, int destinationPageNr) throws IOException {
         this.currentLessonNumber = lessonNumber;
         this.currentPageNumber = destinationPageNr;
-        this.currentLessonType = this.lessonsLists[lessonNumber].getLesson().get(destinationPageNr - 1).getType();
+        this.currentPageType = this.lessonsLists[lessonNumber].getLesson().get(destinationPageNr - 1).getType();
         this.setLessonButtons();
         this.setLessonContent();
     }
 
+    /**
+     * Imposta i bottoni nella toolbar della lezione in base al tipo di pagina
+     */
     private void setLessonButtons() {
-        if (this.currentLessonType == 4 && !this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1).isAlreadyAnswered()) {
+        if (this.currentPageType == 4 && !this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1).isAlreadyAnswered()) {
             this.confirmButton.setDisable(false);
         } else {
             this.confirmButton.setDisable(true);
         }
 
-        if (this.currentPageNumber > 1 && (this.currentLessonType != 4 || this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 2).getType() == 4)) {
+        if (this.currentPageNumber > 1 && (this.currentPageType != 4 || this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 2).getType() == 4)) {
             this.prevButton.setDisable(false);
         } else {
             this.prevButton.setDisable(true);
@@ -220,13 +189,13 @@ public class LessonBox implements Initializable {
             this.nextButton.setDisable(true);
         }
 
-        if (this.currentLessonType != 3) {
+        if (this.currentPageType != 3) {
             this.simulationButton.setDisable(true);
         } else {
             this.simulationButton.setDisable(false);
         }
 
-        if (this.currentLessonType < 4 && this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber).getType() == 4) {
+        if (this.currentPageType < 4 && this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber).getType() == 4) {
             this.nextButton.setText("Passa ai quiz");
         } else {
             this.nextButton.setText("Successivo");
@@ -240,26 +209,28 @@ public class LessonBox implements Initializable {
 
     }
 
+    /**
+     * Switchando tra il tipo di pagina prepara il layout da visualizzare
+     *
+     * @throws IOException  necessario per setLessonText() e setQuestionText()
+     */
     private void setLessonContent() throws IOException {
-        System.out.println(this.currentLessonNumber + "." + this.currentPageNumber);
-        Iterator var1 = this.anchorPane.getChildren().iterator();
 
-        while(var1.hasNext()) {
-            Node node = (Node)var1.next();
+        for (Node node : this.anchorPane.getChildren()) {
             node.setVisible(false);
         }
 
-        switch(this.currentLessonType) {
+        switch(this.currentPageType) {
             case 1:
             case 3:
                 this.setLessonText();
                 this.lessonText.setVisible(true);
-                AnchorPane.setRightAnchor(this.lessonText, 10.0D);
+                AnchorPane.setRightAnchor(this.lessonText, 10.0);
                 return;
             case 2:
                 this.setLessonText();
                 this.lessonText.setVisible(true);
-                AnchorPane.setRightAnchor(this.lessonText, 440.0D);
+                AnchorPane.setRightAnchor(this.lessonText, 440.0);
                 this.imageView.setImage(new Image("/immagini/" + this.currentLessonNumber + "." + this.currentPageNumber + ".png"));
                 this.imageView.setVisible(true);
                 return;
@@ -272,10 +243,19 @@ public class LessonBox implements Initializable {
                 this.four.setVisible(true);
                 return;
             default:
-                throw new IllegalStateException("Unexpected value with lesson type: " + this.currentLessonType);
+                throw new IllegalStateException("Unexpected value with lesson type: " + this.currentPageType);
         }
     }
 
+    /**
+     * Imposta il testo della domanda e delle risposte della pagina, leggendo dal rispettivo file in /src/lezioni/
+     * Un file di testo della domanda deve seguire la seguente formattazione:
+     * - La prima riga contiene il testo della domanda
+     * - Le righe 3,5,7,9 contengono le 4 diverse risposte
+     * - Le righe 2,4,6,8 sono righe vuote fatta eccezione per la riga sovrastante la risposta corretta che dovrà contenere il carattere 'T'
+     *
+     * @throws IOException  necessario per utilizzare la classe FileReader
+     */
     private void setQuestionText() throws IOException {
         String var10002 = System.getProperty("user.dir");
         FileReader file = new FileReader(var10002 + "/src/lezioni/" + this.currentLessonNumber + "." + this.currentPageNumber + ".txt");
@@ -306,6 +286,14 @@ public class LessonBox implements Initializable {
         this.lessonTitle.setText("Domande");
     }
 
+    /**
+     * Imposta il testo della lezione della pagina, leggendo dal rispettivo file in /src/lezioni/
+     * Un file di testo della lezione deve seguire la seguente formattazione:
+     * - La prima riga contiene il titolo della pagina della lezione
+     * - Dalla seconda riga in poi il testo deve essere intervallato dalla stringa "\n" per andare a capo
+     *
+     * @throws IOException  necessario per utilizzare la classe FileReader
+     */
     private void setLessonText() throws IOException {
         String var10002 = System.getProperty("user.dir");
         FileReader fileReader = new FileReader(var10002 + "/src/lezioni/" + this.currentLessonNumber + "." + this.currentPageNumber + ".txt");
@@ -322,6 +310,9 @@ public class LessonBox implements Initializable {
         this.lessonText.setText(text.toString());
     }
 
+    /**
+     * Salva la risposta data nella pagina corrente
+     */
     private void setSelectedButton() {
         this.lessonsLists[this.currentLessonNumber].getLesson().get(this.currentPageNumber - 1).setSelectedButton(this.toggleGroup.getSelectedToggle());
     }

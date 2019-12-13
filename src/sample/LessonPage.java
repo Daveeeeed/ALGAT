@@ -3,16 +3,14 @@ package sample;
 import javafx.scene.control.Toggle;
 
 public class LessonPage {
-    private int type;
+    private final int type;
     private Toggle selectedButton;
     private boolean alreadyAnswered;
-    private boolean correctlyAnswered;
 
     LessonPage(int type) {
         this.type = type;
         this.selectedButton = null;
         this.alreadyAnswered = false;
-        this.correctlyAnswered = false;
     }
 
     public int getType() {
@@ -35,11 +33,4 @@ public class LessonPage {
         this.alreadyAnswered = alreadyAnswered;
     }
 
-    public boolean isCorrectlyAnswered() {
-        return this.correctlyAnswered;
-    }
-
-    public void setCorrectlyAnswered(boolean correctlyAnswered) {
-        this.correctlyAnswered = correctlyAnswered;
-    }
 }

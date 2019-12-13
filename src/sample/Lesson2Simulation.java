@@ -2,13 +2,8 @@ package sample;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
@@ -49,21 +44,6 @@ public class Lesson2Simulation implements Initializable {
     public Lesson2Simulation() {
     }
 
-    private void displayAlert(String header, String content) {
-        ButtonType button = new ButtonType("OK");
-        Alert alert = new Alert(AlertType.NONE);
-        ImageView imageView = new ImageView(new Image("/immagini/alert2.png"));
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(50.0D);
-        alert.setTitle("Avviso");
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.getButtonTypes().setAll(button);
-        alert.setGraphic(imageView);
-        alert.showAndWait();
-
-    }
-
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tree = new LinkedList<>();
         tree.add(new SortTreeRow());
@@ -82,7 +62,7 @@ public class Lesson2Simulation implements Initializable {
             Random random = new Random();
             tree.getFirst().getFirstNode().addElement(random.nextInt(MAX_ELEMENT_VALUE));
         } else {
-            displayAlert("Capienza massima dell'array raggiunta", "Avvia la simulazione o rimuovi qualche elemento.");
+            sample.Alert.displayAlert("Capienza massima dell'array raggiunta", "Avvia la simulazione o rimuovi qualche elemento.");
         }
 
     }
@@ -95,13 +75,13 @@ public class Lesson2Simulation implements Initializable {
                 if (value >= 0 && value < MAX_ELEMENT_VALUE) {
                     tree.getFirst().getFirstNode().addElement(value);
                 } else {
-                    displayAlert("Formato numero errato", "Inserisci un numero compreso tra 0 e 99.");
+                    sample.Alert.displayAlert("Formato numero errato", "Inserisci un numero compreso tra 0 e 99.");
                 }
             } catch (Exception var2) {
-                displayAlert("Formato numero errato", "Inserisci un numero nel formato valido.");
+                sample.Alert.displayAlert("Formato numero errato", "Inserisci un numero nel formato valido.");
             }
         } else {
-            displayAlert("Capienza massima dell'array raggiunta", "Avvia la simulazione o rimuovi qualche elemento.");
+            sample.Alert.displayAlert("Capienza massima dell'array raggiunta", "Avvia la simulazione o rimuovi qualche elemento.");
         }
 
         textField.clear();
@@ -112,7 +92,7 @@ public class Lesson2Simulation implements Initializable {
         if (tree.getFirst().getFirstNode().getElements().size() > 0) {
             tree.getFirst().getFirstNode().removeLastElement();
         } else {
-            displayAlert("Impossibile rimuovere l'elemento", "Aggiungi qualche elemento per continuare.");
+            sample.Alert.displayAlert("Impossibile rimuovere l'elemento", "Aggiungi qualche elemento per continuare.");
         }
 
     }
@@ -135,7 +115,7 @@ public class Lesson2Simulation implements Initializable {
     @FXML
     void start() {
         if (tree.getFirst().getFirstNode().getElements().size() < 2) {
-            displayAlert("Impossibile avviare la simulazione", "Aggiungi qualche elemento per continuare.");
+            sample.Alert.displayAlert("Impossibile avviare la simulazione", "Aggiungi qualche elemento per continuare.");
         } else {
             addButton.setDisable(true);
             addThisButton.setDisable(true);

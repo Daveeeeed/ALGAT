@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -14,7 +15,8 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("Intro.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("Progetto AlgaT - Divide et Impera");
-        primaryStage.setScene(new Scene(root, 900.0D, 600.0D));
+        primaryStage.setScene(new Scene(root, 900.0, 600.0));
+        primaryStage.getIcons().add(new Image("/immagini/icon.png"));
         primaryStage.show();
     }
 

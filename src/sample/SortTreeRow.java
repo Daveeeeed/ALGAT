@@ -5,14 +5,19 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 
 public class SortTreeRow {
-    final boolean option = true;
-    private LinkedList<SortTreeNode> nodes = new LinkedList();
-    private HBox rowBox = new HBox();
+
+    private final LinkedList<SortTreeNode> nodes = new LinkedList<>();
+    private final HBox rowBox = new HBox();
 
     public SortTreeRow() {
         this.rowBox.setAlignment(Pos.CENTER);
-        this.rowBox.setPrefHeight(62.0D);
-        this.rowBox.setSpacing(40.0D);
+        this.rowBox.setPrefHeight(62.0);
+        this.rowBox.setSpacing(40.0);
+    }
+
+    public void setAsQuickSortRow(){
+        this.rowBox.setAlignment(Pos.CENTER_LEFT);
+        this.rowBox.setSpacing(0);
     }
 
     public LinkedList<SortTreeNode> getNodes() {
