@@ -6,7 +6,7 @@ public class Lesson {
 
     private final LinkedList<LessonPage> lesson = new LinkedList<>();
 
-    Lesson(int[] pages) {
+    public Lesson(int[] pages) {
 
         for (int i : pages) {
             this.lesson.add(new LessonPage(i));

@@ -10,44 +10,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-
 import java.net.URL;
-import java.util.LinkedList;
-import java.util.Random;
 import java.util.ResourceBundle;
 
-public class Lesson1Simulation implements Initializable {
+public class Lesson1Simulation extends Simulation implements Initializable{
 
-    final int J_INDEX_Y = 125;
-    final int I_INDEX_Y = 95;
-    final int TEXT_Y = 180;
-    final int MAX_ARRAY_SIZE = 8;
-    final int MAX_ELEMENT_VALUE = 100;
-
-    @FXML
-    private Button addButton;
-    @FXML
-    private Button addThisButton;
-    @FXML
-    private TextField textField;
-    @FXML
-    private Button removeButton;
-    @FXML
-    private Button randomButton;
-    @FXML
-    private Button startButton;
-    @FXML
-    private Button nextButton;
-    @FXML
-    private AnchorPane anchorPane;
-    @FXML
-    private Label iIndexValue;
-    @FXML
-    private Label jIndexValue;
-    @FXML
-    private Label pinIndexValue;
-
-    private LinkedList<SortTreeRow> tree;
+    private final int J_INDEX_Y = 125;
+    private final int I_INDEX_Y = 95;
+    private final int TEXT_Y = 180;
     private Label iPos;
     private Label jPos;
     private Label description;
@@ -56,83 +26,56 @@ public class Lesson1Simulation implements Initializable {
     private int pinVal;
     private boolean isDescriptionEmpty;
 
+    @FXML
+    protected Button addButton;
+    @FXML
+    protected Button addThisButton;
+    @FXML
+    protected TextField textField;
+    @FXML
+    protected Button removeButton;
+    @FXML
+    protected Button randomButton;
+    @FXML
+    protected Button startButton;
+    @FXML
+    protected Button nextButton;
+    @FXML
+    protected AnchorPane anchorPane;
+    @FXML
+    protected Label iIndexValue;
+    @FXML
+    private Label jIndexValue;
+    @FXML
+    private Label pinIndexValue;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        SortTreeNode rootNode = new SortTreeNode();
-        SortTreeRow rootRow = new SortTreeRow();
-
-        rootNode.gethBox().setLayoutX(436);
-        rootNode.gethBox().setLayoutY(30);
-        rootRow.addNode(rootNode);
-        tree = new LinkedList<>();
-        tree.add(rootRow);
-        anchorPane.getChildren().add(rootNode.gethBox());
+        initializeS(anchorPane, nextButton);
         iIndexValue.setText("---");
         jIndexValue.setText("---");
         pinIndexValue.setText("---");
-        nextButton.setDisable(true);
         isDescriptionEmpty = true;
     }
 
     @FXML
     public void add() {
-        SortTreeNode rootNode = tree.getFirst().getFirstNode();
-        if (rootNode.getElements().size() < MAX_ARRAY_SIZE) {
-            Random random = new Random();
-            rootNode.gethBox().setLayoutX(rootNode.gethBox().getLayoutX() - 28);
-            rootNode.addElement(random.nextInt(MAX_ELEMENT_VALUE));
-        } else {
-            Alert.displayAlert("Capienza massima dell'array raggiunta", "Avvia la simulazione o rimuovi qualche elemento.");
-        }
-
+        addS();
     }
 
     @FXML
     public void addThis() {
-        SortTreeNode rootNode = tree.getFirst().getFirstNode();
-        if (rootNode.getElements().size() < MAX_ARRAY_SIZE) {
-            try {
-                int value = Integer.parseInt(textField.getText());
-                if (value >= 0 && value < MAX_ELEMENT_VALUE) {
-                    rootNode.gethBox().setLayoutX(rootNode.gethBox().getLayoutX() - 28);
-                    rootNode.addElement(value);
-                } else {
-                    Alert.displayAlert("Formato numero errato", "Inserisci un numero compreso tra 0 e 99.");
-                }
-            } catch (Exception var2) {
-                Alert.displayAlert("Formato numero errato", "Inserisci un numero nel formato valido.");
-            }
-        } else {
-            Alert.displayAlert("Capienza massima dell'array raggiunta", "Avvia la simulazione o rimuovi qualche elemento.");
-        }
-        textField.clear();
+        addThisS(textField);
     }
 
     @FXML
     public void remove() {
-        SortTreeNode rootNode = tree.getFirst().getFirstNode();
-        if (rootNode.getElements().size() > 0) {
-            rootNode.gethBox().setLayoutX(rootNode.gethBox().getLayoutX() + 28);
-            rootNode.removeLastElement();
-        } else {
-            Alert.displayAlert("Impossibile rimuovere l'elemento", "Aggiungi qualche elemento per continuare.");
-        }
-
+        removeS();
     }
 
     @FXML
     public void randomize() {
-        while(tree.getFirst().getFirstNode().getElements().size() > 0) {
-            this.remove();
-        }
-
-        Random random = new Random();
-        int rep = random.nextInt(MAX_ARRAY_SIZE);
-
-        for(int i = 0; i <= rep; ++i) {
-            this.add();
-        }
-
+        randomizeS();
     }
 
     @FXML
@@ -181,7 +124,7 @@ public class Lesson1Simulation implements Initializable {
     public void nextStep() {
         if (isFirstRowSolvingEnded()) {
             if (isDescriptionEmpty) {
-                description.setText("LA RISOLUZIONE DELLA FUNZIONE PERNO APPLICATA ALL'ARRAY DI PARTENZA E' TERMINATA. AD OGNI PRESSIONE DEL BOTTONE \"PROSSIMO STEP\", PER OGNI ELEMENTO DELL'ULTIMA RIGA DELL'ALBERO, VERRA' ORA APPLICATA LA FUNZIONE QUICKSORT SUI DUE SOTTO-ARRAY DIVISI DALL'ELEMENTO PERNO, ESEGUENDO SUCCESSIVAMENTE SU DI ESSI LA FUNZIONE PERNO. QUANDO L'ALGORITMO TERMINA VIENE VISUALIZZATO L'ARRAY ORDINATO.");
+                description.setText("LA RISOLUZIONE DELLA FUNZIONE PERNO APPLICATA ALL'ARRAY DI PARTENZA E' TERMINATA. AD OGNI PRESSIONE DEL BOTTONE \"RISOLVI SUCCESSIVI\", PER OGNI ELEMENTO DELL'ULTIMA RIGA DELL'ALBERO, VERRA' ORA APPLICATA LA FUNZIONE QUICKSORT SUI DUE SOTTO-ARRAY DIVISI DALL'ELEMENTO PERNO, ESEGUENDO SUCCESSIVAMENTE SU DI ESSI LA FUNZIONE PERNO. QUANDO L'ALGORITMO TERMINA VIENE VISUALIZZATO L'ARRAY ORDINATO.");
                 isDescriptionEmpty = false;
                 iPos.setText("");
                 jPos.setText("");
@@ -248,7 +191,7 @@ public class Lesson1Simulation implements Initializable {
     private void updateIndex() {
         SortTreeNode firstNode = tree.getFirst().getFirstNode();
         if (isIAtRowEnd()) {
-            iIndexValue.setText("OUT OF ARRAY BOUND");
+            iIndexValue.setText("OUT OF BOUND");
             iPos.setText("");
         } else {
             iIndexValue.setText(Integer.toString(iVal));
@@ -325,17 +268,15 @@ public class Lesson1Simulation implements Initializable {
             if (node.getPinIndex() != 0) {
                 //LEFT
                 SortTreeNode left = new SortTreeNode();
-                left.setParent1Node(node);
-                left.setParent2Node(node);
                 node.setChildLeftNode(left);
 
                 for (int i = 0; i < node.getPinIndex(); ++i) {
                     left.addElement(node.getElements().get(i).getValue());
                 }
-                left.gethBox().setLayoutX(node.getXof(0));
-                left.gethBox().setLayoutY(node.gethBox().getLayoutY() + 90);
+                left.getHBox().setLayoutX(node.getXof(0));
+                left.getHBox().setLayoutY(node.getHBox().getLayoutY() + 90);
                 workingRow.addNode(left);
-                anchorPane.getChildren().add(left.gethBox());
+                anchorPane.getChildren().add(left.getHBox());
             } else {
                 node.getElements().getFirst().getRectangle().setFill(Color.YELLOW);
             }
@@ -343,18 +284,16 @@ public class Lesson1Simulation implements Initializable {
             if (node.getPinIndex() != node.getElements().size()-1){
                 //RIGHT
                 SortTreeNode right = new SortTreeNode();
-                right.setParent1Node(node);
-                right.setParent2Node(node);
                 node.setChildRightNode(right);
 
                 for(int i = node.getPinIndex() + 1; i < node.getElements().size(); ++i) {
                     right.addElement(node.getElements().get(i).getValue());
                 }
 
-                right.gethBox().setLayoutX(2 + node.getXof(node.getPinIndex() + 1));
-                right.gethBox().setLayoutY(node.gethBox().getLayoutY() + 90);
+                right.getHBox().setLayoutX(2 + node.getXof(node.getPinIndex() + 1));
+                right.getHBox().setLayoutY(node.getHBox().getLayoutY() + 90);
                 workingRow.addNode(right);
-                anchorPane.getChildren().add(right.gethBox());
+                anchorPane.getChildren().add(right.getHBox());
             }
 
         }
@@ -375,13 +314,13 @@ public class Lesson1Simulation implements Initializable {
         }
 
         for (Element element : solution.getElements()) {
-            solution.gethBox().getChildren().add(element.getStackPane());
+            solution.getHBox().getChildren().add(element.getStackPane());
         }
 
-        solution.gethBox().setLayoutX(tree.getFirst().getFirstNode().getXof(0));
-        solution.gethBox().setLayoutY(tree.get(tree.size() - 2).getFirstNode().gethBox().getLayoutY() + 90);
+        solution.getHBox().setLayoutX(tree.getFirst().getFirstNode().getXof(0));
+        solution.getHBox().setLayoutY(tree.get(tree.size() - 2).getFirstNode().getHBox().getLayoutY() + 90);
         tree.getLast().addNode(solution);
-        anchorPane.getChildren().add(solution.gethBox());
+        anchorPane.getChildren().add(solution.getHBox());
     }
 
 }

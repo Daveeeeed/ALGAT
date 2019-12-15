@@ -5,18 +5,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
-
 import java.net.URL;
-import java.util.LinkedList;
-import java.util.Random;
 import java.util.ResourceBundle;
 
-public class Lesson2Simulation implements Initializable {
+public class Lesson2Simulation extends Simulation implements Initializable  {
 
-    final int MAX_ARRAY_SIZE = 8;
-    final int MAX_ELEMENT_VALUE = 100;
+    private final int DEFAULT_NODE_SPACING = 15;
+    private int neededRows;
 
     @FXML
     private Button addButton;
@@ -34,89 +30,35 @@ public class Lesson2Simulation implements Initializable {
     private Button nextButton;
     @FXML
     private AnchorPane anchorPane;
-    @FXML
-    private VBox vBox;
 
-    private LinkedList<SortTreeRow> tree;
-    private int row_to_draw;
-    private int totalRows;
-
-    public Lesson2Simulation() {
-    }
-
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tree = new LinkedList<>();
-        tree.add(new SortTreeRow());
-        vBox.getChildren().add(tree.getFirst().getRowBox());
-        tree.getFirst().addNode(new SortTreeNode());
-        tree.getFirst().getRowBox().getChildren().add(tree.getFirst().getFirstNode().gethBox());
-        row_to_draw = 0;
-        totalRows = 0;
-        nextButton.setDisable(true);
-
+        initializeS(anchorPane, nextButton);
     }
 
     @FXML
-    void add() {
-        if (tree.getFirst().getFirstNode().getElements().size() < MAX_ARRAY_SIZE) {
-            Random random = new Random();
-            tree.getFirst().getFirstNode().addElement(random.nextInt(MAX_ELEMENT_VALUE));
-        } else {
-            sample.Alert.displayAlert("Capienza massima dell'array raggiunta", "Avvia la simulazione o rimuovi qualche elemento.");
-        }
-
+    public void add() {
+        addS();
     }
 
     @FXML
-    void addThis() {
-        if (tree.getFirst().getFirstNode().getElements().size() < MAX_ARRAY_SIZE) {
-            try {
-                int value = Integer.parseInt(textField.getText());
-                if (value >= 0 && value < MAX_ELEMENT_VALUE) {
-                    tree.getFirst().getFirstNode().addElement(value);
-                } else {
-                    sample.Alert.displayAlert("Formato numero errato", "Inserisci un numero compreso tra 0 e 99.");
-                }
-            } catch (Exception var2) {
-                sample.Alert.displayAlert("Formato numero errato", "Inserisci un numero nel formato valido.");
-            }
-        } else {
-            sample.Alert.displayAlert("Capienza massima dell'array raggiunta", "Avvia la simulazione o rimuovi qualche elemento.");
-        }
-
-        textField.clear();
+    public void addThis() {
+        addThisS(textField);
     }
 
     @FXML
-    void remove() {
-        if (tree.getFirst().getFirstNode().getElements().size() > 0) {
-            tree.getFirst().getFirstNode().removeLastElement();
-        } else {
-            sample.Alert.displayAlert("Impossibile rimuovere l'elemento", "Aggiungi qualche elemento per continuare.");
-        }
-
+    public void remove() {
+        removeS();
     }
 
     @FXML
-    void randomize() {
-        while (tree.getFirst().getFirstNode().getElements().size() > 0) {
-            remove();
-        }
-
-        Random random = new Random();
-        int rep = random.nextInt(MAX_ARRAY_SIZE);
-
-        for (int i = 0; i <= rep; ++i) {
-            add();
-        }
-
+    public void randomize() {
+        randomizeS();
     }
 
     @FXML
     void start() {
-        if (tree.getFirst().getFirstNode().getElements().size() < 2) {
-            sample.Alert.displayAlert("Impossibile avviare la simulazione", "Aggiungi qualche elemento per continuare.");
-        } else {
+        if (tree.getFirst().getNodes().getFirst().getElements().size() > 0) {
             addButton.setDisable(true);
             addThisButton.setDisable(true);
             textField.setDisable(true);
@@ -125,128 +67,153 @@ public class Lesson2Simulation implements Initializable {
             startButton.setDisable(true);
             nextButton.setDisable(false);
 
-            //Calculation rows needed for the graph
-            double halfRowsDouble = Math.log(tree.getFirst().getFirstNode().getElements().size()) / Math.log(2);
-            totalRows = (int) halfRowsDouble;
-            if (halfRowsDouble % 1 != 0) {
-                ++totalRows;
-            }
-            totalRows = 2 * totalRows + 1;
-
-            int i;
-            //Adding rows to tree and vBox
-            for (i = 1; i < totalRows; ++i) {
-                tree.addLast(new SortTreeRow());
-                vBox.getChildren().add(tree.getLast().getRowBox());
-            }
-
-            for (i = 0; i < totalRows / 2; ++i) {
-                divide(i);
-            }
-
-            for (i = totalRows / 2; i < totalRows - 1; ++i) {
-                merge(i);
-            }
+            neededRows = calculateRows(tree.getFirst().getFirstNode().getElements().size());
+        } else {
+            Alert.displayAlert("Impossibile avviare la simulazione", "Aggiungi qualche elemento per continuare.");
         }
-
     }
 
-    private void divide(int rowIndex) {
+    @FXML
+    void nextStep() {
+        SortTreeRow currentRow = tree.getLast();
+        SortTreeRow workingRow = new SortTreeRow();
+        tree.addLast(workingRow);
+        if (tree.indexOf(currentRow) < neededRows/2){
+            divideNodes(currentRow, workingRow);
+        } else if (tree.size() <= neededRows){
+            mergeNodes(currentRow, workingRow);
+        } else {
+            nextButton.setDisable(true);
+        }
+        if (tree.size() > 2) drawLine(tree.get(tree.size() - 3));
+    }
 
-        for (SortTreeNode node : tree.get(rowIndex).getNodes()) {
+    /**
+     * Calcola il numero di righe necessarie alla realizzazione dell'albero
+     * contenente la risoluzione grafica della simulazione
+     *
+     * @param arraySize dimensione dell'array di partenza
+     * @return numero di righe necessarie
+     */
+    private int calculateRows(int arraySize){
+        double halfRowsDouble = Math.log(arraySize) / Math.log(2);
+        int halfRowsInt = (int)halfRowsDouble;
+        if (halfRowsDouble % 1 != 0) ++halfRowsInt;
+        return (2 * halfRowsInt) + 1;
+    }
+
+    /**
+     * Calcola l'offset ideale con il quale distanziare i nodi di una SortTreeRow per
+     * visualizzarli correttamente
+     *
+     * @param row SortTreeRow della quale calcolare l'offset ideale
+     * @return offset da applicare ai nodi appartenenti a row
+     */
+    private double nodeOffset(SortTreeRow row){
+        return (DEFAULT_NODE_SPACING * neededRows)/Math.pow(2,tree.indexOf(row));
+    }
+
+    /**
+     * Esegue la divisione dei nodi appertenenti a currentRow inserendoli in workingRow
+     *
+     * @param currentRow SortTreeRow di provenienza dei nodi
+     * @param workingRow SortTreeRow di destinazione dei nodi
+     */
+    private void divideNodes(SortTreeRow currentRow, SortTreeRow workingRow) {
+
+        for (SortTreeNode node : currentRow.getNodes()) {
             if (node.getElements().size() > 1) {
                 int middle = node.getElements().size() / 2;
 
                 SortTreeNode left = new SortTreeNode();
-                left.setParent1Node(node);
-                left.setParent2Node(node);
                 node.setChildLeftNode(left);
 
                 for (int i = 0; i < middle; ++i) {
                     left.addElement(node.getElements().get(i).getValue());
                 }
 
-                tree.get(rowIndex + 1).addNode(left);
+                left.getHBox().setLayoutX(node.getXof(0) - nodeOffset(workingRow));
+                left.getHBox().setLayoutY(node.getHBox().getLayoutY() + 120);
+                workingRow.addNode(left);
+                anchorPane.getChildren().add(left.getHBox());
 
                 SortTreeNode right = new SortTreeNode();
-                right.setParent1Node(node);
-                right.setParent2Node(node);
                 node.setChildRightNode(right);
 
                 for (int i = middle; i < node.getElements().size(); ++i) {
                     right.addElement(node.getElements().get(i).getValue());
                 }
 
-                tree.get(rowIndex + 1).addNode(right);
+                right.getHBox().setLayoutX(node.getXof(middle) + 2 + nodeOffset(workingRow));
+                right.getHBox().setLayoutY(node.getHBox().getLayoutY() + 120);
+                workingRow.addNode(right);
+                anchorPane.getChildren().add(right.getHBox());
 
-                //if node size == 1 and the row isn't the last one, the node is cloned into the row below
-            } else if (rowIndex == tree.size() / 2 - 1) {
+            } else if (tree.indexOf(currentRow) < neededRows/2) {
+                System.out.println("ENTRATOO");
                 SortTreeNode child = new SortTreeNode();
-                child.setParent1Node(node);
-                child.setParent2Node(node);
                 node.setChildLeftNode(child);
 
-                for (int i = 0; i < node.getElements().size(); ++i) {
-                    child.addElement(node.getElements().get(i).getValue());
-                }
+                child.addElement(node.getElements().getFirst().getValue());
 
-                tree.get(rowIndex + 1).addNode(child);
+                child.getHBox().setLayoutX(node.getXof(0));
+                child.getHBox().setLayoutY(node.getHBox().getLayoutY() + 120);
+                workingRow.addNode(child);
+                anchorPane.getChildren().add(child.getHBox());
             }
         }
 
     }
 
-    private void merge(int rowIndex) {
-        for (int i = 0; i < tree.get(rowIndex).getNodes().size(); ++i) {
+    /**
+     * Esegue l'unione dei nodi appertenenti a currentRow inserendoli in workingRow.
+     * Per ogni due nodi di currentRow, viene creato un terzo nodo ordinato inserito in workingRow
+     *
+     * @param currentRow SortTreeRow di provenienza dei nodi
+     * @param workingRow SortTreeRow di destinazione dei nodi
+     */
+    private void mergeNodes(SortTreeRow currentRow, SortTreeRow workingRow) {
+        for (int i = 0; i < currentRow.getNodes().size(); ++i) {
             SortTreeNode merged = new SortTreeNode();
-            if (i + 1 < tree.get(rowIndex).getNodes().size()) {
-                merged.setParent1Node(tree.get(rowIndex).getNode(i));
-                merged.setParent2Node(tree.get(rowIndex).getNode(i + 1));
-                tree.get(rowIndex).getNode(i).setChildRightNode(merged);
-                tree.get(rowIndex).getNode(i).setChildLeftNode(merged);
-                tree.get(rowIndex).getNode(i + 1).setChildRightNode(merged);
-                tree.get(rowIndex).getNode(i + 1).setChildLeftNode(merged);
-                merge(tree.get(rowIndex).getNode(i), tree.get(rowIndex).getNode(i + 1), merged);
+            SortTreeNode first = currentRow.getNode(i);
+            if (i + 1 < currentRow.getNodes().size()) {
+                SortTreeNode second = currentRow.getNode(i + 1);
                 ++i;
+                first.setChildRightNode(merged);
+                first.setChildLeftNode(merged);
+                second.setChildRightNode(merged);
+                second.setChildLeftNode(merged);
+                mergeElements(first, second, merged);
+
+                merged.getHBox().setLayoutX((first.getXof(0) + second.getXof(0) - 58*first.getElements().size())/2);
+                merged.getHBox().setLayoutY(first.getHBox().getLayoutY() + 120);
+                workingRow.addNode(merged);
+                anchorPane.getChildren().add(merged.getHBox());
             } else {
-                merged.setParent1Node(tree.get(rowIndex).getNode(i));
-                merged.setParent2Node(tree.get(rowIndex).getNode(i));
-                tree.get(rowIndex).getNode(i).setChildRightNode(merged);
-                tree.get(rowIndex).getNode(i).setChildLeftNode(merged);
+                first.setChildRightNode(merged);
+                first.setChildLeftNode(merged);
 
-                for (int k = 0; k < tree.get(rowIndex).getNode(i).getElements().size(); ++k) {
-                    merged.addElement(tree.get(rowIndex).getNode(i).getElements().get(k).getValue());
+                for (Element element : first.getElements()) {
+                    merged.addElement(element.getValue());
                 }
+
+                merged.getHBox().setLayoutX(first.getXof(0));
+                merged.getHBox().setLayoutY(first.getHBox().getLayoutY() + 120);
+                workingRow.addNode(merged);
+                anchorPane.getChildren().add(merged.getHBox());
             }
-
-            tree.get(rowIndex + 1).addNode(merged);
         }
 
     }
 
-    @FXML
-    void nextStep() {
-        int i;
-        i = 0;
-        while (tree.get(i).getRowBox().getChildren().size() != 0) {
-            ++i;
-        }
-
-        for (SortTreeNode node : tree.get(i - 1).getNodes()) {
-            drawLine(node);
-        }
-
-        for (SortTreeNode node : tree.get(i).getNodes()) {
-            tree.get(i).getRowBox().getChildren().add(node.gethBox());
-        }
-
-        if (i + 1 >= tree.size()) {
-            nextButton.setDisable(true);
-        }
-
-    }
-
-    private void merge(SortTreeNode left, SortTreeNode right, SortTreeNode merged) {
+    /**
+     * Unisce due SortTreeNode riordinandone gli elementi
+     *
+     * @param left primo nodo sorgente
+     * @param right secondo nodo sorgente
+     * @param merged nodo destinatario dell'unione
+     */
+    private void mergeElements(SortTreeNode left, SortTreeNode right, SortTreeNode merged) {
         int left_index = 0;
         int right_index = 0;
 
@@ -278,32 +245,34 @@ public class Lesson2Simulation implements Initializable {
 
     }
 
-    private void drawLine(SortTreeNode node) {
-        if (node != null) {
-            int right_depth;
-            Line right_line;
+    /**
+     * Disegna tutte le linee che collegano i nodi di row con i loro figli
+     * @param row riga della quale disegnare le linee che collegano i nodi con i figli
+     */
+    private void drawLine(SortTreeRow row) {
+        for (SortTreeNode node : row.getNodes()){
+            Line left_line, right_line;
             if (node.getChildLeftNode() != null) {
-                right_depth = node.getNodeDepth(node.getChildLeftNode());
-                if (right_depth == row_to_draw) {
-                    right_line = new Line(node.getCenterX(), node.getCenterY() + 30, node.getChildLeftNode().getCenterX(), node.getChildLeftNode().getCenterY() - 30);
-                    anchorPane.getChildren().add(right_line);
-                    right_line.toBack();
-                } else if (right_depth < row_to_draw) {
-                    drawLine(node.getChildLeftNode());
-                }
+                left_line = createLine(node, node.getChildLeftNode());
+                anchorPane.getChildren().add(left_line);
+                left_line.toBack();
             }
-
-            if (node.getChildRightNode() != null) {
-                right_depth = node.getNodeDepth(node.getChildRightNode());
-                if (right_depth == row_to_draw) {
-                    right_line = new Line(node.getCenterX(), node.getCenterY() + 30, node.getChildRightNode().getCenterX(), node.getChildRightNode().getCenterY() - 30);
-                    anchorPane.getChildren().add(right_line);
-                    right_line.toBack();
-                } else if (right_depth < row_to_draw) {
-                    drawLine(node.getChildRightNode());
-                }
+            if (node.getChildRightNode() != null && node.getChildRightNode() != node.getChildLeftNode()) {
+                right_line = createLine(node, node.getChildRightNode());
+                anchorPane.getChildren().add(right_line);
+                right_line.toBack();
             }
         }
-
     }
+
+    /**
+     * Crea una line singola che collega i due nodi parent e child
+     * @param parent primo nodo
+     * @param child secondo nodo
+     * @return line che collega i due nodi
+     */
+    private Line createLine(SortTreeNode parent, SortTreeNode child){
+        return new Line(parent.getCenterX(), parent.getHBox().getBoundsInParent().getMaxY(), child.getCenterX(), child.getHBox().getBoundsInParent().getMinY());
+    }
+
 }

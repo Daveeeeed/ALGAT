@@ -14,20 +14,23 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
 public class SortTreeNode {
-    private SortTreeNode childLeftNode = null;
-    private SortTreeNode childRightNode = null;
-    private SortTreeNode parent1Node = null;
-    private SortTreeNode parent2Node = null;
-    private final LinkedList<Element> elements = new LinkedList<>();
-    private final HBox hBox = new HBox();
+
     private int pinIndex;
+    private HBox hBox;
+    private SortTreeNode childLeftNode;
+    private SortTreeNode childRightNode;
+    private LinkedList<Element> elements;
 
     public SortTreeNode() {
+        hBox = new HBox();
         this.hBox.setAlignment(Pos.CENTER);
         this.hBox.setPrefHeight(62.0D);
         this.hBox.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, null, new BorderWidths(2.0D))));
         this.hBox.setMaxHeight(62.0D);
         this.hBox.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        elements = new LinkedList<>();
+        childRightNode = null;
+        childLeftNode = null;
     }
 
     public void pinActive() {
@@ -42,6 +45,14 @@ public class SortTreeNode {
 
         this.swapElements(this.pinIndex, j);
         this.pinIndex = j;
+        for (Element element : elements){
+            if (element.getValue() <= elements.get(pinIndex).getValue()){
+                element.getRectangle().setFill(Color.LIGHTPINK);
+            } else if (element.getValue() > elements.get(pinIndex).getValue()){
+                element.getRectangle().setFill(Color.LIGHTGRAY);
+            }
+            elements.get(pinIndex).getRectangle().setFill(Color.YELLOW);
+        }
     }
 
     public void pinPassive() {
@@ -85,35 +96,23 @@ public class SortTreeNode {
         this.elements.remove(this.elements.size() - 1);
     }
 
-    public int getNodeDepth(SortTreeNode node) {
-        return node.getParent1Node() == null && node.getParent2Node() == null ? 0 : 1 + Math.max(this.getNodeDepth(node.getParent1Node()), this.getNodeDepth(node.getParent2Node()));
-    }
-
     public double getXof(int element){
         return hBox.getLayoutX() + 56 * element;
     }
 
     public double getCenterX() {
-        double a = this.hBox.getBoundsInParent().getMinX() + this.hBox.getParent().getBoundsInParent().getMinX() + this.hBox.getParent().getParent().getBoundsInParent().getMinX();
-        double b = this.hBox.getBoundsInParent().getMaxX() + this.hBox.getParent().getBoundsInParent().getMinX() + this.hBox.getParent().getParent().getBoundsInParent().getMinX();
-        return (a + b) / 2.0D;
+        return (getHBox().getBoundsInParent().getMaxX() + getHBox().getBoundsInParent().getMinX())/2;
     }
 
-    public double getElementX(int element) {
+    public double getElementCenterX(int element) {
         return this.elements.get(element).getStackPane().getBoundsInParent().getMinX() + this.hBox.getBoundsInParent().getMinX() + 25.0D;
-    }
-
-    public double getCenterY() {
-        double a = this.hBox.getBoundsInParent().getMinY() + this.hBox.getParent().getBoundsInParent().getMinY() + this.hBox.getParent().getParent().getBoundsInParent().getMinY() + this.hBox.getParent().getParent().getParent().getBoundsInParent().getMinY();
-        double b = this.hBox.getBoundsInParent().getMaxY() + this.hBox.getParent().getBoundsInParent().getMinY() + this.hBox.getParent().getParent().getBoundsInParent().getMinY() + this.hBox.getParent().getParent().getParent().getBoundsInParent().getMinY();
-        return (a + b) / 2.0D;
     }
 
     public LinkedList<Element> getElements() {
         return this.elements;
     }
 
-    public HBox gethBox() {
+    public HBox getHBox() {
         return this.hBox;
     }
 
@@ -131,22 +130,6 @@ public class SortTreeNode {
 
     public void setChildRightNode(SortTreeNode childRightNode) {
         this.childRightNode = childRightNode;
-    }
-
-    public SortTreeNode getParent1Node() {
-        return this.parent1Node;
-    }
-
-    public void setParent1Node(SortTreeNode parent1Node) {
-        this.parent1Node = parent1Node;
-    }
-
-    public SortTreeNode getParent2Node() {
-        return this.parent2Node;
-    }
-
-    public void setParent2Node(SortTreeNode parent2Node) {
-        this.parent2Node = parent2Node;
     }
 
     public int getPinIndex() {

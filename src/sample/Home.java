@@ -17,6 +17,8 @@ import javafx.scene.image.ImageView;
 
 public class Home implements Initializable {
 
+    private final int LESSON_NR = 3;
+
     @FXML
     private TabPane tabPane;
     @FXML
@@ -32,11 +34,8 @@ public class Home implements Initializable {
     private Image[] images;
     private int currentImageDisplayed = 0;
 
-    public Home() {
-    }
-
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        int LESSON_NR = 3;
         pagination.setMaxPageIndicatorCount(LESSON_NR);
         images = new Image[LESSON_NR];
         IntStream.range(0, images.length).forEach((i) -> images[i] = new Image("/immagini/" + i + ".png"));

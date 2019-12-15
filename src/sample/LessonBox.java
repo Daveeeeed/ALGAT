@@ -128,6 +128,21 @@ public class LessonBox implements Initializable {
     }
 
     /**
+     * Imposta l'impaginazione della pagina (destinationPageNr) della lezione (lessonNumber)
+     *
+     * @param lessonNumber      indice della lezione da caricare
+     * @param destinationPageNr indice della pagine della lezione da caricare
+     * @throws IOException      necessario per setLessonContent()
+     */
+    public void loadLesson(int lessonNumber, int destinationPageNr) throws IOException {
+        this.currentLessonNumber = lessonNumber;
+        this.currentPageNumber = destinationPageNr;
+        this.currentPageType = this.lessonsLists[lessonNumber].getLesson().get(destinationPageNr - 1).getType();
+        this.setLessonButtons();
+        this.setLessonContent();
+    }
+
+    /**
      * Chiude la Tab della lezione corrente riportando alla Home.
      * Visualizza un Alert indicando quante risposte sono state date correttamente.
      */
@@ -150,21 +165,6 @@ public class LessonBox implements Initializable {
             ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(8)).setSelected(true);
             ((CheckBox)((VBox) tabPane.getTabs().get(0).getContent()).getChildren().get(8)).setText(Integer.toString(this.currentLessonNumber));
         }
-    }
-
-    /**
-     * Imposta l'impaginazione della pagina (destinationPageNr) della lezione (lessonNumber)
-     *
-     * @param lessonNumber      indice della lezione da caricare
-     * @param destinationPageNr indice della pagine della lezione da caricare
-     * @throws IOException      necessario per setLessonContent()
-     */
-    void loadLesson(int lessonNumber, int destinationPageNr) throws IOException {
-        this.currentLessonNumber = lessonNumber;
-        this.currentPageNumber = destinationPageNr;
-        this.currentPageType = this.lessonsLists[lessonNumber].getLesson().get(destinationPageNr - 1).getType();
-        this.setLessonButtons();
-        this.setLessonContent();
     }
 
     /**

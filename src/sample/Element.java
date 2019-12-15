@@ -15,7 +15,7 @@ public class Element {
     private final Label label;
     private final Rectangle rectangle;
 
-    Element(int value) {
+    public Element(int value) {
         this.value = value;
         this.label = new Label(Integer.toString(this.value));
         this.label.setFont(Font.font("Avenir Medium", FontWeight.BOLD, 35.0D));
