@@ -1,9 +1,9 @@
-In che modo il Quick-sort ordina un vettore A[1,..,n]
+In che modo il QuickSort ordina un vettore A[1,..,n]
 T
-Ordina i due sotto-vettori A[primo ... j – 1] e A[j + 1 ... ultimo] dove per ogni i appartiene[primo,j-1] : A[i]>A[j], per ogni i appartiene [j+1,ultimo] : A[i]<A[j] e dove A[j] è il perno, richiamando ricorsivamente Quick Sort
+Ordina i due sotto vettori A[primo ... j – 1] e A[j + 1 ... ultimo] dove per ogni i appartiene[primo,j-1] : A[i]>A[j], per ogni i appartiene [j+1,ultimo] : A[i]<A[j] e dove A[j] è il perno, richiamando ricorsivamente QuickSort
 
 Selezionando ad ogni ciclo l’elemento minimo della porzione di vettore non ancora ordinata A[j,...,n] per metterlo nella posizione j
 
 Selezionando ad ogni ciclo l’elemento massimo della porzione di vettore non ancora ordinata A[1,...,i] per metterlo nella posizione i
 
-Ordina i due sotto-vettori A[primo ... j – 1] e A[j + 1 ... ultimo] dove per ogni i appartiene [primo,j-1] : A[i]<A[j], per ogni i appartine [j+1,ultimo] : A[i]>A[j] e dove A[j] è il perno, richiamando ricorsivamente Quick Sort
+Ordina i due sotto vettori A[primo ... j – 1] e A[j + 1 ... ultimo] dove per ogni i appartiene [primo,j-1] : A[i]<A[j], per ogni i appartiene [j+1,ultimo] : A[i]>A[j] e dove A[j] è il perno, richiamando ricorsivamente QuickSort

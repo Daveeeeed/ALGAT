@@ -1,6 +1,7 @@
-Implementazione del QuickSort:
+Implementazione del QuickSort
 \n
-• Se il vettore è composto da un solo numero allora non verrà eseguita alcuna chiamata ricorsiva, invece se il vettore è formato da più elementi allora verrà chiamata la funzione perno che restituirà un valore che ha il compito di dividere il vettore in due sottovettori\n
+• Se il vettore è composto da un solo numero allora non verrà eseguita alcuna chiamata ricorsiva, invece se il vettore è formato da più elementi allora verrà chiamata la funzione perno che restituirà un valore che ha il compito di dividere il vettore in due sotto vettori\n
 \n
-• In seguito a questo controllo verranno chiamate le due chiamate ricorsive sui due sottovettori\n
+• In seguito a questo controllo verranno chiamate le due chiamate ricorsive sui due sotto vettori\n
 \n
+

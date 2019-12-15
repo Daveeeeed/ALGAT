@@ -1,0 +1,9 @@
+In quale situazione il QuickSort è più efficiente del MergeSort?
+T
+Quando la quantità di dati è ridotta
+
+In tutti i casi
+
+Quando la quantità di dati è importante
+
+In nessun caso

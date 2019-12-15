@@ -58,7 +58,7 @@ public class LessonBox implements Initializable {
         this.lessonsLists = new Lesson[3];
         this.lessonsLists[0] = new Lesson(new int[]{1, 1, 1, 1, 2, 1, 1, 4, 4, 4, 4, 4});
         this.lessonsLists[1] = new Lesson(new int[]{1, 1, 2, 2, 3, 4, 4, 4, 4, 4});
-        this.lessonsLists[2] = new Lesson(new int[]{1, 2, 2, 3, 4});
+        this.lessonsLists[2] = new Lesson(new int[]{1, 2, 2, 3, 4, 4, 4, 4, 4});
         this.toggleGroup = new ToggleGroup();
         this.one.setToggleGroup(this.toggleGroup);
         this.two.setToggleGroup(this.toggleGroup);
@@ -84,6 +84,7 @@ public class LessonBox implements Initializable {
             this.prevButton.setDisable(true);
             this.nextButton.setDisable(true);
             this.lessonText.setVisible(false);
+            this.lessonTitle.setText("Simulazione interattiva");
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource("Lesson" + this.currentLessonNumber + "Simulation.fxml"));
             Parent root = loader.load();
             SubScene subScene1 = new SubScene(root, 878.0, 469.0);
@@ -98,6 +99,7 @@ public class LessonBox implements Initializable {
             this.nextButton.setDisable(false);
             this.lessonText.setVisible(true);
             this.anchorPane.getChildren().remove(this.anchorPane.getChildren().size() - 1);
+            this.loadLesson(currentLessonNumber, currentPageNumber);
         }
 
     }

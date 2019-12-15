@@ -2,7 +2,7 @@ Qual è il costo computazionale dell'algoritmo Binary Search nel caso ottimo?
 
 O(n^2)
 
-O(log n)
+O(log(n))
 
 O(n)
 T

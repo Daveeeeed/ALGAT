@@ -4,6 +4,7 @@ Esempi applicativi
 \n
 • Ci sono due principali metodi risolutivi:\n
 \n
-• Quick Sort: “divide” complesso, niente fase di “combina” (lezione 2)\n
+• QuickSort: “divide” complesso, niente fase di “combina” (lezione 2)\n
 \n
-• Merge Sort: “divide” banale, “combina” complesso (lezione 3)\n
+• MergeSort: “divide” banale, “combina” complesso (lezione 3)\n
+

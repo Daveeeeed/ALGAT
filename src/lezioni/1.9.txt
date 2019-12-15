@@ -1,4 +1,4 @@
-Quick-sort nel caso pessimo ha costo computazionale
+Qual è il costo computazionale del QuickSort nel caso pessimo?
 
 O(log(n))
 T

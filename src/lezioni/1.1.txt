@@ -4,5 +4,5 @@ QuickSort
 \n
 • L'algoritmo consiste nel riordinare un array in maniera ricorsiva\n
 \n
-• Divide in maniera complessa ma la fase di combinazione delle soluzioni è praticamente nulla\n
+• Divide in maniera complessa mentre la fase di combinazione delle soluzioni ha complessità praticamente nulla\n
 \n

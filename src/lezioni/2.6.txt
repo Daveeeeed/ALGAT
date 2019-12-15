@@ -1,0 +1,9 @@
+Quale di queste affermazioni è falsa?
+
+La complessità del MergeSort non varia in base al set di dati, sia grande o piccolo
+T
+Il QuickSort è più lento nei casi in cui la quantità dei dati è ridotta
+
+Nel caso pessimo la complessità computazionale del QuickSort è maggiore di quella del MergeSort
+
+Nessuna delle precedenti
