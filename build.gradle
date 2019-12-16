@@ -8,26 +8,31 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
+
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
     jcenter()
 }
 
-dependencies {
-    testImplementation group: 'junit', name: 'junit', version: '4.12'
+javafx {
+    modules = ['javafx.controls', 'javafx.base', 'javafx.graphics', 'javafx.fxml']
 }
 
-javafx {
-    version = '12'
-    modules('javafx.controls','javafx.fxml')
+ext.junit_version = "5.4.2"
+
+dependencies {
+    testImplementation "org.junit.jupiter:junit-jupiter:$junit_version"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:$junit_version"
 }
 
 jar {
     manifest {
-        attributes 'Main-Class': 'algat.Main'
+        attributes 'Main-Class': 'algat.AlgaT'
     }
 }
 
-mainClassName = 'algat.Main'
+mainClassName = 'algat.AlgaT'
