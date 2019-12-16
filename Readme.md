@@ -3,23 +3,25 @@
 ## Progetto del corso di Algoritmi e Strutture Dati dell'Alma Mater Studiorum di Bologna
 
 ### Prerequisiti
-L'applicazione utilizza funzionalità della libreria grafica JavaFX e richiede Java
-versione 1.8.0 o successiva.
-A partire da Java 1.11.0 la libreria grafica JavaFX non è più integrata nativamente
-nella JVM, si ritiene quindi necessario il download.
+L'applicazione utilizza funzionalità della libreria grafica JavaFX e richiede i
+seguenti software in versione uguale o successiva alla descritta:
+- Java SDK 13
+- JavaFX 12
+- Gradle 6.0.1
 
 ### Struttura delle directories
-La root directory, chiamata src contiene le seguenti sotto directory
+La root directory "/src/main" contiente due sotto directories, java e resources
+come definito dalla struttura standard di Gradle.
+Sono poi cosi suddivisi i file nelle sotto-directories
 ```
-"testi" che contiene i file di testo, comprese le domande delle lezioni
-"immagini" che contiene le immagini presenti nelle lezioni e necessarie alla corretta esecuzione del sorgente
-"sample" che contiene tutti i file ".java" e ".fxml".
+/java/algat/testi - contiene tutti i file ".java"
+/resources/layout - contiene tutti i file "fxml"
+/resources/lezioni - contiene i file di testo, comprese le domande delle lezioni
+/resources/immagini - contiene le immagini presenti nelle lezioni e necessarie alla corretta esecuzione del sorgente
 ```
 I file ".java" contengono il codice sorgente, suddiviso in macroclassi.
 I file ".fxml" realizzati con l'aiuto dell'applicativo SceneBuilder contengono i
 layout grafici.
-
-
 
 ### Inserimento di testi, immagini e nuove lezioni
 Per inserire una nuova lezione è preventivamente necessario predisporre dei file

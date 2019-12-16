@@ -1,9 +1,0 @@
-Perchè l'algoritmo di ricerca binaria non viene considerato un buon esempio di algoritmo Divide et Impera?\n
-
-Perchè non è un algoritmo ricorsivo
-
-Non è presente una fase di ricombinazioni delle soluzioni
-T
-Il costo computazionale dell'algoritmo ricorsivo è più alto rispetto a quello iterativo
-
-Per nessuno di questi motivi

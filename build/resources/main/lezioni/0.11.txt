@@ -1,9 +1,0 @@
-Ricercare un numero in un vettore ordinato ha complessità computazionale?
-T
-O(log2(n))
-
-O(n^2)
-
-O(n log(n))
-
-O(n)

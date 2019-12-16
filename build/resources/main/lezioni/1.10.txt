@@ -1,9 +1,0 @@
-Che costo computazionale ha il QuickSort nel caso medio?
-
-O(n)
-
-O(1)
-
-O(n^2)
-T
-O(n log(n))

@@ -1,9 +1,0 @@
-La parte "impera" nel MergeSort a cosa corrisponde?
-
-Alla divisione a metà del vettore
-
-Alla fusione degli array
-T
-Alla chiamata ricorsiva sui sotto vettori
-
-Nessuna delle precedenti

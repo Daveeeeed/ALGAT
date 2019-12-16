@@ -1,9 +1,0 @@
-Che scopo ha il Binary Search?
-
-Ricercare un elemento in un vettore
-
-Riordinare un vettore in maniera crescente
-T
-Ricercare un elemento in un vettore ordinato
-
-Eliminare un elemento da un vettore

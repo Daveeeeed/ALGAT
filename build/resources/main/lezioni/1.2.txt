@@ -1,9 +1,0 @@
-Algoritmo, funzione del perno
-\n
-• Inizialmente si sceglie un elemento del vettore (noi prenderemo il primo elemento per semplicità) detto perno\n
-\n
-• Tutti gli elementi più piccoli del perno vengono spostati nelle posizioni del vettore precedenti a quella del perno (alla sua sinistra)\n
-\n
-• Tutti gli elementi più grandi del perno vengono spostati nelle posizioni del vettore successive a quella del perno (alla sua destra)\n
-\n
-

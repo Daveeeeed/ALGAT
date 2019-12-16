@@ -1,9 +1,0 @@
-Qual è il costo computazionale del QuickSort nel caso pessimo?
-
-O(log(n))
-T
-O(n^2)
-
-O(n log(n))
-
-O(n^3)
