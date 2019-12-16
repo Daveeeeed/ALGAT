@@ -1,9 +1,0 @@
-Quale di queste affermazioni è vera?
-
-Tutte le sottostanti
-
-Il MergeSort non può essere applicato a qualsiasi tipo di dato
-T
-Il Mergesort richiede uno spazio di memoria aggiuntivo rispetto al QuickSort
-
-Il MergeSort divide l'array in due metà necessariamente uguali

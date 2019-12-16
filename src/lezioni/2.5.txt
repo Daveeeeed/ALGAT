@@ -1,9 +1,0 @@
-Che costo computazionale ha il MergeSort in tutti e tre i casi?
-
-O(n)
-
-O(log(n))
-
-O(n^2)
-T
-O(n log(n))

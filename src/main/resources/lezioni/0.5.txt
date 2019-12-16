@@ -1,0 +1,12 @@
+Binary Search
+\n
+• Dividi l’array a metà (determinando l’elemento di mezzo)\n
+\n
+• Prende l'elemento centrale e lo confronta con la key\n
+\n
+• Se l'elemento selezionato è uguale alla key allora il programma termina\n
+\n
+• Al contrario allora esegue la chiamata ricorsiva sulla metà di destra o di sinistra o su nessuna a seconda del confronto con l’elemento centrale\n
+\n
+• L'algoritmo termina se verrà trovato un elemento uguale alla key oppure se non si possono più effettuare chiamate ricorsive\n
+\n
