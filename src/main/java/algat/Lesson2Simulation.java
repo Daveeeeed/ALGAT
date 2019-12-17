@@ -150,7 +150,6 @@ public class Lesson2Simulation extends Simulation implements Initializable  {
                 anchorPane.getChildren().add(right.getHBox());
 
             } else if (tree.indexOf(currentRow) < neededRows/2) {
-                System.out.println("ENTRATOO");
                 SortTreeNode child = new SortTreeNode();
                 node.setChildLeftNode(child);
 

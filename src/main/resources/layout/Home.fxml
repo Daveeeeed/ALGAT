@@ -36,7 +36,7 @@
                 </VBox.margin>
                 <Image url="@../immagini/0.png" />
              </ImageView>
-             <Pagination fx:id="pagination" maxPageIndicatorCount="4" onMouseClicked="#updateImage" onMouseDragged="#updateImage" onMouseEntered="#updateImage" onMouseExited="#updateImage" onMouseMoved="#updateImage" onMousePressed="#updateImage" onMouseReleased="#updateImage" pageCount="4" VBox.vgrow="NEVER">
+             <Pagination fx:id="pagination" maxPageIndicatorCount="3" onMouseClicked="#updateImage" onMouseDragged="#updateImage" onMouseEntered="#updateImage" onMouseExited="#updateImage" onMouseMoved="#updateImage" onMousePressed="#updateImage" onMouseReleased="#updateImage" pageCount="3" VBox.vgrow="NEVER">
                 <cursor>
                    <Cursor fx:constant="DEFAULT" />
                 </cursor>
