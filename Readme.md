@@ -9,12 +9,31 @@ seguenti software in versione uguale o successiva alla descritta:
 - JavaFX 12
 - Gradle 6.0.1
 
-### Struttura delle directories
-La root directory "/src/main" contiente due sotto directories, java e resources
-come definito dalla struttura standard di Gradle.
-Sono poi cosi suddivisi i file nelle sotto-directories
+### Utilizzo del software
+Dopo aver clonato o scaricato la repository da GitHub e aver verificato i prerequisiti,
+per avviare il programma basterà chiamare i comandi
 ```
-/java/algat/testi - contiene tutti i file ".java"
+gradle shadowjar
+cp src/ build/libs/
+```
+i quali rispettivamente compilano il programma e copiano i file necessari all'esecuzione
+nella cartella dell'eseguibile.
+Spostandosi poi in
+```
+./build/libs
+```
+si potrà avviare il software con il comando
+```
+java -jar ALGAT-all.jar
+```
+NB: per funzionare correttamente ha bisogno della presenza della cartella src sul suo stesso percorso.
+
+### Struttura delle directories
+La root directory "./src/main" contiente due sotto directories, java e resources
+come definito dalla struttura standard di Gradle.
+Sono poi cosi suddivisi i file
+```
+/java/algat - contiene tutti i file ".java"
 /resources/layout - contiene tutti i file "fxml"
 /resources/lezioni - contiene i file di testo, comprese le domande delle lezioni
 /resources/immagini - contiene le immagini presenti nelle lezioni e necessarie alla corretta esecuzione del sorgente
@@ -42,11 +61,11 @@ Le schermate vengono identificate con i successivi numeri
 3 - schermata con testo e possibilità di avviare una simulazione.
 4 - schermata con domanda a risposta multipla.
 ```
-Per aggiungere i testi bisogna inserire nella cartella "lezioni" un file di testo
-chiamato "NL.NS.txt" dove "NL" è il numero della lezione,mentre "NS" è il numero
+Per aggiungere i testi bisogna inserire nella directory "lezioni" un file di testo
+chiamato "NL.NS.txt" dove "NL" è il numero della lezione, mentre "NS" è il numero
 della schermata in cui si vuole visionare il testo.
 Per aggiungere un’immagine il procedimento è il medesimo ma l’immagine dovrà essere
-inserita nella cartella "immagini" al posto di "lezioni" e bisogna accertarsi che
+inserita nella directory "immagini" al posto di "lezioni" e bisogna accertarsi che
 il numero di schermata sia di tipo 2.
 Per aggiungere una domande bisogna seguire le istruzioni per l’inserimento di un
 testo, l’unica differenza si trova nella scrittura del file, che dovrà esser
