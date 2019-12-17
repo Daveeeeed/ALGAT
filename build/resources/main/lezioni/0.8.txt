@@ -1,0 +1,9 @@
+Divide et Impera è una tecnica di progettazione:\n
+
+Botton-up
+T
+Top-down
+
+Nessuna di queste due
+
+Tutte e due

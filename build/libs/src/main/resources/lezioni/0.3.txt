@@ -1,0 +1,9 @@
+Metodi d'applicazione del divide-et-impera
+\n
+• I passi “divide” e “impera” devono essere semplici e immediati\n
+\n
+• La risoluzione del problema deve riproporre una partizione di esso\n
+\n
+• Le parti devono essere bilanciate \n
+\n
+• Ovviamente, i costi devono essere migliori del corrispondente algoritmo iterativo\n

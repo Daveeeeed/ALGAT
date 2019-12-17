@@ -1,0 +1,14 @@
+Implementazione del perno
+• Ci serviranno due indici, i  e j:\n
+\n
+• L’indice j dà la posizione dell’ultimo elemento già scandito minore del perno (x)\n
+\n
+• j + 1 dà la posizione del primo elemento già scandito maggiore o uguale al perno (y)\n
+\n
+• i rappresenta il primo elemento non ancora esaminato\n
+\n
+• Ad ogni iterazione, se y è maggiore o uguale a x allora y viene lasciato dov’è mentre se y è minore di x allora y viene scambiato con il primo elemento già scandito maggiore o uguale a x (j+1)\n
+\n
+• La funzione perno restituisce la posizione finale del perno che ci servirà nella chiamata ricorsiva
+\n
+
