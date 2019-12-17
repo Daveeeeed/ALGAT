@@ -14,7 +14,7 @@ Dopo aver clonato o scaricato la repository da GitHub e aver verificato i prereq
 per avviare il programma basterà chiamare i comandi
 ```
 gradle shadowjar
-cp src/ build/libs/
+cp -R src build/libs/
 ```
 i quali rispettivamente compilano il programma e copiano i file necessari all'esecuzione
 nella cartella dell'eseguibile.
